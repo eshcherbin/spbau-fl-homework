@@ -33,4 +33,22 @@ public class KeyWord extends Lexeme {
     BEGIN,
     END,
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+
+    KeyWord keyWord = (KeyWord) o;
+
+    return getType() == keyWord.getType();
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+    return result;
+  }
 }

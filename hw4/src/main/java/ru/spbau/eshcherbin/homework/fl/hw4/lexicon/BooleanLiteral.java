@@ -21,4 +21,22 @@ public class BooleanLiteral extends Lexeme {
         getValue() +
         ')';
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+
+    BooleanLiteral that = (BooleanLiteral) o;
+
+    return getValue() == that.getValue();
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (getValue() ? 1 : 0);
+    return result;
+  }
 }

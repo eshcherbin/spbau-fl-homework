@@ -40,8 +40,6 @@ Comment = "//" [^\r\n]*
 
 Identifier = [_a-z] [_a-z0-9]*
 
-IntegerTypeSuffix = [lL]
-FloatTypeSuffix = [fFdD]
 Sign = [+-]
 ExponentIndicator = [eE]
 
@@ -50,13 +48,11 @@ Digits = [0-9] | [0-9] {DigitsOrUnderscores}? [0-9]
 SignedInteger = {Sign}? {Digits}
 ExponentPart = {ExponentIndicator} {SignedInteger}
 
-DecimalIntegerNumeral = 0 | [1-9] {Digits}? | [1-9] "_"+ {Digits}
-DecimalIntegerLiteral = {DecimalIntegerNumeral} {IntegerTypeSuffix}?
-DecimalFloatingPointLiteral = 
-    {Digits} "." {Digits}? {ExponentPart}? {FloatTypeSuffix}? |
-    "." {Digits} {ExponentPart}? {FloatTypeSuffix}? |
-    {Digits} {ExponentPart} {FloatTypeSuffix}? |
-    {Digits} {ExponentPart}? {FloatTypeSuffix}
+DecimalIntegerLiteral = 0 | [1-9] {Digits}? | [1-9] "_"+ {Digits}
+DecimalFloatingPointLiteral =
+    {Digits} "." {Digits}? {ExponentPart}? |
+    "." {Digits} {ExponentPart}? |
+    {Digits} {ExponentPart}?
 
 %%
 
@@ -98,8 +94,8 @@ DecimalFloatingPointLiteral =
 "true" { return new BooleanLiteral(true, yyline, yycolumn, yylength()); }
 "false" { return new BooleanLiteral(false, yyline, yycolumn, yylength()); }
 
-{DecimalIntegerLiteral} { return new FloatingPointLiteral(Long.parseLong(yytext().toString()), yyline, yycolumn, yylength()); }
-{DecimalFloatingPointLiteral} { return new FloatingPointLiteral(Double.parseDouble(yytext().toString()), yyline, yycolumn, yylength()); }
+{DecimalIntegerLiteral} { return new FloatingPointLiteral(Long.parseLong(yytext().toString().replace("_", "")), yyline, yycolumn, yylength()); }
+{DecimalFloatingPointLiteral} { return new FloatingPointLiteral(Double.parseDouble(yytext().toString().replace("_", "")), yyline, yycolumn, yylength()); }
 
 {Identifier} { return new Identifier(yytext().toString(), yyline, yycolumn, yylength()); }
 

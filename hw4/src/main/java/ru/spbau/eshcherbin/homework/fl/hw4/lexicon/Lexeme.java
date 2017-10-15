@@ -35,4 +35,24 @@ public abstract class Lexeme {
         (getColumn() + getLength() - 1) +
         '}';
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Lexeme)) return false;
+
+    Lexeme lexeme = (Lexeme) o;
+
+    return getLine() == lexeme.getLine() &&
+        getColumn() == lexeme.getColumn() &&
+        getLength() == lexeme.getLength();
+  }
+
+  @Override
+  public int hashCode() {
+    int result = getLine();
+    result = 31 * result + getColumn();
+    result = 31 * result + getLength();
+    return result;
+  }
 }

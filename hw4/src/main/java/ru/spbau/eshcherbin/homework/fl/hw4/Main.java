@@ -13,16 +13,16 @@ public class Main {
       System.exit(1);
     }
 
-    String programText = "";
+    String source = "";
     try {
-      programText = new String(Files.readAllBytes(Paths.get(args[0])));
+      source = new String(Files.readAllBytes(Paths.get(args[0])));
     } catch (IOException e) {
       System.err.println("Error while attempting to read the given file: " + e);
       System.exit(2);
     }
 
     LLexer lexer = new LLexer(null);
-    lexer.reset(programText, 0, programText.length(), LLexer.YYINITIAL);
+    lexer.reset(source, 0, source.length(), LLexer.YYINITIAL);
 
     try {
       for (Lexeme lexeme = lexer.yylex(); lexeme != null; lexeme = lexer.yylex()) {

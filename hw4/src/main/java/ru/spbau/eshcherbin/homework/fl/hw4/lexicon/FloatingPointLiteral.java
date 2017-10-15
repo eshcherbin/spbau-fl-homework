@@ -21,4 +21,24 @@ public class FloatingPointLiteral extends Lexeme {
         getValue() +
         ')';
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
+
+    FloatingPointLiteral that = (FloatingPointLiteral) o;
+
+    return Double.compare(that.getValue(), getValue()) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    long temp;
+    temp = Double.doubleToLongBits(getValue());
+    result = 31 * result + (int) (temp ^ (temp >>> 32));
+    return result;
+  }
 }
