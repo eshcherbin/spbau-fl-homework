@@ -177,6 +177,51 @@ public class LLexerTest {
     ))));
   }
 
+  @Test
+  public void testFunctionalFibonacci() throws Exception {
+    List<Lexeme> lexemes = runLexer("fib n ==> fib_helper n 0 1;\n" +
+            "fib_helper 0 a _ ==> a;\n" +
+            "fib_helper n a b ==> (n-1) b (a+b);");
+
+    assertThat(lexemes, is(equalTo(ImmutableList.of(
+        new Identifier("fib", 0, 0, 3),
+        new Identifier("n", 0, 4, 1),
+        new Operator(EQ, 0, 6, 2),
+        new Operator(GR, 0, 8, 1),
+        new Identifier("fib_helper", 0, 10, 10),
+        new Identifier("n", 0, 21, 1),
+        new FloatingPointLiteral(0, 0, 23, 1),
+        new FloatingPointLiteral(1, 0, 25, 1),
+        new Delimiter(SEMICOLON, 0, 26, 1),
+        new Identifier("fib_helper", 1, 0, 10),
+        new FloatingPointLiteral(0, 1, 11, 1),
+        new Identifier("a", 1, 13, 1),
+        new Identifier("_", 1, 15, 1),
+        new Operator(EQ, 1, 17, 2),
+        new Operator(GR, 1, 19, 1),
+        new Identifier("a", 1, 21, 1),
+        new Delimiter(SEMICOLON, 1, 22, 1),
+        new Identifier("fib_helper", 2, 0, 10),
+        new Identifier("n", 2, 11, 1),
+        new Identifier("a", 2, 13, 1),
+        new Identifier("b", 2, 15, 1),
+        new Operator(EQ, 2, 17, 2),
+        new Operator(GR, 2, 19, 1),
+        new Delimiter(LPAREN, 2, 21, 1),
+        new Identifier("n", 2, 22, 1),
+        new Operator(MINUS, 2, 23, 1),
+        new FloatingPointLiteral(1, 2, 24, 1),
+        new Delimiter(RPAREN, 2, 25, 1),
+        new Identifier("b", 2, 27, 1),
+        new Delimiter(LPAREN, 2, 29, 1),
+        new Identifier("a", 2, 30, 1),
+        new Operator(PLUS, 2, 31, 1),
+        new Identifier("b", 2, 32, 1),
+        new Delimiter(RPAREN, 2, 33, 1),
+        new Delimiter(SEMICOLON, 2, 34, 1)
+    ))));
+  }
+
   private List<Lexeme> runLexer(String source) throws Exception {
     lexer.reset(source, 0, source.length(), LLexer.YYINITIAL);
     List<Lexeme> lexemes = new ArrayList<>();
