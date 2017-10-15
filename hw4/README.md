@@ -6,7 +6,7 @@ This is a great lexer for the `L` language.
 
 Run `bash build.sh` to configure and build the executable. 
 After that, run `./hw4 <source>` to perform lexical analysis
-of the source code in `<source>` file.
+of the source code in the `<source>` file.
 
 ## Example
 
