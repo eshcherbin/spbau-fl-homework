@@ -3,9 +3,9 @@
 package ru.spbau.eshcherbin.homework.fl.hw4;
 
 import ru.spbau.eshcherbin.homework.fl.hw4.lexicon.*;
+import ru.spbau.eshcherbin.homework.fl.hw4.lexicon.Delimiter.DelimiterType;
 import ru.spbau.eshcherbin.homework.fl.hw4.lexicon.KeyWord.KeyWordType;
 import ru.spbau.eshcherbin.homework.fl.hw4.lexicon.Operator.OperatorType;
-import ru.spbau.eshcherbin.homework.fl.hw4.lexicon.Delimiter.DelimiterType;
 
 
 /**
@@ -483,7 +483,7 @@ class LLexer {
    * @return      the next token
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
-  public Lexeme yylex() throws java.io.IOException {
+  public Lexeme yylex() throws java.io.IOException, LexerException {
     int zzInput;
     int zzAction;
 
@@ -623,7 +623,7 @@ class LLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { throw new Error("Illegal character <" + yytext() + ">");
+            { throw new LexerException("Illegal character <" + yytext() + ">");
             }
           case 34: break;
           case 2: 

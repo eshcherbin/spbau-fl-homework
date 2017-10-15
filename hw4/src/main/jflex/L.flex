@@ -12,6 +12,8 @@ import ru.spbau.eshcherbin.homework.fl.hw4.lexicon.Delimiter.DelimiterType;
 %line
 %column
 
+%yylexthrow LexerException
+
 %{
     private int yyline;
     private int yycolumn;
@@ -101,5 +103,4 @@ DecimalFloatingPointLiteral =
 
 {Identifier} { return new Identifier(yytext().toString(), yyline, yycolumn, yylength()); }
 
-/* error fallback (taken from JFlex manual) */
-[^] { throw new Error("Illegal character <" + yytext() + ">"); }
+[^] { throw new LexerException("Illegal character <" + yytext() + ">"); }
