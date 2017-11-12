@@ -36,6 +36,7 @@ public class Operator extends Lexeme {
     LEQ,
     AND,
     OR,
+    ASSIGN,
   }
 
   @Override

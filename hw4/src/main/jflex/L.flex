@@ -85,6 +85,7 @@ DecimalFloatingPointLiteral =
 "<=" { return new Operator(OperatorType.LEQ, yyline, yycolumn, yylength()); }
 "&&" { return new Operator(OperatorType.AND, yyline, yycolumn, yylength()); }
 "||" { return new Operator(OperatorType.OR, yyline, yycolumn, yylength()); }
+":=" { return new Operator(OperatorType.ASSIGN, yyline, yycolumn, yylength()); }
 
 /* delimiters */
 "(" { return new Delimiter(DelimiterType.LPAREN, yyline, yycolumn, yylength()); }

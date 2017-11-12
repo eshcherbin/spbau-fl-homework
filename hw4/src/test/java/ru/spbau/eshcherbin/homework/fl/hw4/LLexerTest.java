@@ -222,6 +222,18 @@ public class LLexerTest {
     ))));
   }
 
+  @Test
+  public void testAssignment() throws Exception {
+    List<Lexeme> lexemes = runLexer("x := q // i * t");
+
+    assertThat(lexemes, is(equalTo(ImmutableList.of(
+        new Identifier("x", 0, 0, 1),
+        new Operator(ASSIGN, 0, 2, 2),
+        new Identifier("q", 0, 5, 1),
+        new Comment(" i * t", 0, 7, 8)
+    ))));
+  }
+
   private List<Lexeme> runLexer(String source) throws Exception {
     lexer.reset(source, 0, source.length(), LLexer.YYINITIAL);
     List<Lexeme> lexemes = new ArrayList<>();
