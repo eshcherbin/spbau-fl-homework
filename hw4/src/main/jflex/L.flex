@@ -100,4 +100,4 @@ DecimalFloatingPointLiteral =
 
 {Identifier} { return new Identifier(yytext().toString(), yyline, yycolumn, yylength()); }
 
-[^] { throw new LexerException("Illegal character <" + yytext() + ">"); }
+[^] { throw new LexerException("Illegal character <" + yytext() + "> at line " + yyline + ", column " + yycolumn); }
