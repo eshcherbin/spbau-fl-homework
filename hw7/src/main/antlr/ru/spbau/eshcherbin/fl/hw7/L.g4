@@ -5,7 +5,7 @@ program
     ;
 
 functionDefinition
-    :   functionName = IDENTIFIER '(' (argumentNames += IDENTIFIER (',' argumentNames += IDENTIFIER)*) ')'
+    :   functionName = IDENTIFIER '(' (argumentNames += IDENTIFIER (',' argumentNames += IDENTIFIER)*)? ')'
         functionBody = block
     ;
 
@@ -23,16 +23,16 @@ statement
     |   'return' expression
         # returnStatement
 
-    |   'write' '(' expression ')'
+    |   'write' expression
         # writeStatement
 
-    |   'read' '(' IDENTIFIER ')'
+    |   'read' IDENTIFIER
         # readStatement
 
-    |   'if' '(' condition = expression ')' thenBody = block ('else' elseBody = block)?
+    |   'if' condition = expression thenBody = block ('else' elseBody = block)?
         # ifStatement
 
-    |   'while' '(' condition = expression ')' body = block
+    |   'while' condition = expression body = block
         # whileStatement
     ;
 

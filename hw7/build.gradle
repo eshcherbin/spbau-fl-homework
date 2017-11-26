@@ -19,15 +19,16 @@ dependencies {
 generateGrammarSource {
     maxHeapSize = "64m"
     arguments += ['-package', 'ru.spbau.eshcherbin.fl.hw7']
-    outputDirectory = new File("generated-src/antlr/main/ru/spbau/eshcherbin/fl/hw7".toString())
+    outputDirectory = new File("generated-src/main/".toString())
 }
 compileJava.dependsOn generateGrammarSource
 sourceSets {
-    generated {
-        java.srcDir 'generated-src/antlr/main/'
+    main {
+        java {
+            java.srcDir 'generated-src/main/'
+        }
     }
 }
-compileJava.source sourceSets.generated.java, sourceSets.main.java
 
 clean{
     delete "generated-src"
