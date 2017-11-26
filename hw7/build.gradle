@@ -3,6 +3,7 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'antlr'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 
@@ -29,6 +30,8 @@ sourceSets {
         }
     }
 }
+
+mainClassName = 'ru.spbau.eshcherbin.fl.hw7.Main'
 
 clean{
     delete "generated-src"
