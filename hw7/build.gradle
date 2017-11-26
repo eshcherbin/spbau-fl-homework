@@ -1,0 +1,34 @@
+group 'ru.spbau.eshcherbin.fl'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'antlr'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:4.7"
+    compile "org.antlr:antlr4-runtime:4.7"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ['-package', 'ru.spbau.eshcherbin.fl.hw7']
+    outputDirectory = new File("generated-src/antlr/main/ru/spbau/eshcherbin/fl/hw7".toString())
+}
+compileJava.dependsOn generateGrammarSource
+sourceSets {
+    generated {
+        java.srcDir 'generated-src/antlr/main/'
+    }
+}
+compileJava.source sourceSets.generated.java, sourceSets.main.java
+
+clean{
+    delete "generated-src"
+}
