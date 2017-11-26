@@ -22,7 +22,7 @@ public class AstDecimalIntegerLiteralExpression extends AstExpression {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    AstDecimalFloatingPointLiteralExpression that = (AstDecimalFloatingPointLiteralExpression) o;
+    AstDecimalIntegerLiteralExpression that = (AstDecimalIntegerLiteralExpression) o;
 
     return getValue().equals(that.getValue());
   }
