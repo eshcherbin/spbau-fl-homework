@@ -1,17 +1,19 @@
 package ru.spbau.eshcherbin.fl.hw7.ast;
 
-public class AstIfStatement {
+public class AstIfStatement extends AstStatement {
   private AstExpression condition;
   private AstBlock thenBody;
   private AstBlock elseBody;
 
-  public AstIfStatement(AstExpression condition, AstBlock thenBody) {
+  public AstIfStatement(AstExpression condition, AstBlock thenBody, int line, int column) {
+    super(line, column);
     this.condition = condition;
     this.thenBody = thenBody;
     this.elseBody = null;
   }
 
-  public AstIfStatement(AstExpression condition, AstBlock thenBody, AstBlock elseBody) {
+  public AstIfStatement(AstExpression condition, AstBlock thenBody, AstBlock elseBody, int line, int column) {
+    super(line, column);
     this.condition = condition;
     this.thenBody = thenBody;
     this.elseBody = elseBody;

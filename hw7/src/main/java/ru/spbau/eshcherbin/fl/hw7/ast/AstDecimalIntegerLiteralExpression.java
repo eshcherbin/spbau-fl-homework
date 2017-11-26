@@ -3,7 +3,8 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 public class AstDecimalIntegerLiteralExpression extends AstExpression {
   private String value;
 
-  public AstDecimalIntegerLiteralExpression(String value) {
+  public AstDecimalIntegerLiteralExpression(String value, int line, int column) {
+    super(line, column);
     this.value = value;
   }
 

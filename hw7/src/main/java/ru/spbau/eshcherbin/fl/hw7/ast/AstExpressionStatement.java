@@ -3,7 +3,8 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 public class AstExpressionStatement extends AstStatement {
   private AstExpression expression;
 
-  public AstExpressionStatement(AstExpression expression) {
+  public AstExpressionStatement(AstExpression expression, int line, int column) {
+    super(line, column);
     this.expression = expression;
   }
 

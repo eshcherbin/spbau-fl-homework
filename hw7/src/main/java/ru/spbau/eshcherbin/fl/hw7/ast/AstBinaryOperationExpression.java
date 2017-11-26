@@ -5,7 +5,12 @@ public class AstBinaryOperationExpression extends AstExpression {
   private AstExpression rightOperand;
   private String operator;
 
-  public AstBinaryOperationExpression(AstExpression leftOperand, AstExpression rightOperand, String operator) {
+  public AstBinaryOperationExpression(AstExpression leftOperand,
+                                      AstExpression rightOperand,
+                                      String operator,
+                                      int line,
+                                      int column) {
+    super(line, column);
     this.leftOperand = leftOperand;
     this.rightOperand = rightOperand;
     this.operator = operator;

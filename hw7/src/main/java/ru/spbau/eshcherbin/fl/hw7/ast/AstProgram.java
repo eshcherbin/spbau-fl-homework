@@ -5,7 +5,8 @@ import java.util.List;
 public class AstProgram extends AstNode {
   private List<AstFunctionDefinition> functionDefinitions;
 
-  public AstProgram(List<AstFunctionDefinition> functionDefinitions) {
+  public AstProgram(List<AstFunctionDefinition> functionDefinitions, int line, int column) {
+    super(line, column);
     this.functionDefinitions = functionDefinitions;
   }
 

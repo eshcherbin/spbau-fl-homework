@@ -5,7 +5,8 @@ import java.util.List;
 public class AstBlock extends AstNode {
   private List<AstStatement> statements;
 
-  public AstBlock(List<AstStatement> statements) {
+  public AstBlock(List<AstStatement> statements, int line, int column) {
+    super(line, column);
     this.statements = statements;
   }
 

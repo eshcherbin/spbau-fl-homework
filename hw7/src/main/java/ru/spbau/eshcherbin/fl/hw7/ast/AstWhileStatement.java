@@ -1,10 +1,11 @@
 package ru.spbau.eshcherbin.fl.hw7.ast;
 
-public class AstWhileStatement {
+public class AstWhileStatement extends AstStatement {
   private AstExpression condition;
   private AstBlock body;
 
-  public AstWhileStatement(AstExpression condition, AstBlock body) {
+  public AstWhileStatement(AstExpression condition, AstBlock body, int line, int column) {
+    super(line, column);
     this.condition = condition;
     this.body = body;
   }

@@ -3,7 +3,8 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 public class AstVariableAccessExpression extends AstExpression {
   private String variableName;
 
-  public AstVariableAccessExpression(String variableName) {
+  public AstVariableAccessExpression(String variableName, int line, int column) {
+    super(line, column);
     this.variableName = variableName;
   }
 

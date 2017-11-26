@@ -2,11 +2,12 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 
 import java.util.List;
 
-public class AstFunctionCallExpression {
+public class AstFunctionCallExpression extends AstExpression {
   private String functionName;
   private List<AstExpression> arguments;
 
-  public AstFunctionCallExpression(String functionName, List<AstExpression> arguments) {
+  public AstFunctionCallExpression(String functionName, List<AstExpression> arguments, int line, int column) {
+    super(line, column);
     this.functionName = functionName;
     this.arguments = arguments;
   }

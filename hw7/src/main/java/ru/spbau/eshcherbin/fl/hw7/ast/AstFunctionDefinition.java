@@ -7,7 +7,8 @@ public class AstFunctionDefinition extends AstNode {
   private List<String> arguments;
   private AstBlock body;
 
-  public AstFunctionDefinition(String name, List<String> arguments, AstBlock body) {
+  public AstFunctionDefinition(String name, List<String> arguments, AstBlock body, int line, int column) {
+    super(line, column);
     this.name = name;
     this.arguments = arguments;
     this.body = body;

@@ -4,7 +4,8 @@ public class AstAssignmentStatement extends AstStatement {
   private String variableName;
   private AstExpression expression;
 
-  public AstAssignmentStatement(String variableName, AstExpression expression) {
+  public AstAssignmentStatement(String variableName, AstExpression expression, int line, int column) {
+    super(line, column);
     this.variableName = variableName;
     this.expression = expression;
   }

@@ -3,7 +3,8 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 public class AstReadStatement extends AstStatement {
   private String variableName;
 
-  public AstReadStatement(String expression) {
+  public AstReadStatement(String expression, int line, int column) {
+    super(line, column);
     this.variableName = expression;
   }
 
