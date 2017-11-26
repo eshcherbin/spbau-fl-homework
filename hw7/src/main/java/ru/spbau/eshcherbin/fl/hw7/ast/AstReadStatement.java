@@ -3,9 +3,9 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 public class AstReadStatement extends AstStatement {
   private String variableName;
 
-  public AstReadStatement(String expression, int line, int column) {
+  public AstReadStatement(String variableName, int line, int column) {
     super(line, column);
-    this.variableName = expression;
+    this.variableName = variableName;
   }
 
   public String getVariableName() {
