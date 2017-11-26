@@ -3,6 +3,8 @@ package ru.spbau.eshcherbin.fl.hw7;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
+import ru.spbau.eshcherbin.fl.hw7.ast.AstNodes;
+import ru.spbau.eshcherbin.fl.hw7.ast.AstProgram;
 
 import java.io.IOException;
 
@@ -23,9 +25,9 @@ public class Main {
 
     LLexer lexer = new LLexer(inputStream);
     LParser parser = new LParser(new BufferedTokenStream(lexer));
-    LParser.ProgramContext programContext = parser.program();
+    AstProgram program = AstNodes.fromContext(parser.program());
     if (parser.getNumberOfSyntaxErrors() == 0) {
-      System.out.println(programContext.getText());
+      program.accept(new AstPrinter());
     } else {
       System.err.println("Error while parsing the given file, aborting");
       System.exit(3);

@@ -54,14 +54,14 @@ expression
 
     |   '('
         leftOperand = expression
-        BINARY_OPERATION
+        BINARY_OPERATOR
         rightOperand = expression
         ')'
         # binaryOperationExpression
     ;
 
 
-BINARY_OPERATION
+BINARY_OPERATOR
     :   '+'
     |   '-'
     |   '*'
