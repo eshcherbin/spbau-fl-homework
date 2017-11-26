@@ -1,18 +1,35 @@
 package ru.spbau.eshcherbin.fl.hw7.ast;
 
+import org.antlr.v4.runtime.Token;
 import ru.spbau.eshcherbin.fl.hw7.LParser;
+
+import java.util.stream.Collectors;
 
 public class AstNodes {
   public static AstProgram fromContext(LParser.ProgramContext context) {
-    return null;
+    return new AstProgram(
+        context.functionDefinitions.stream().map(AstNodes::fromContext).collect(Collectors.toList()),
+        context.start.getLine(),
+        context.start.getCharPositionInLine()
+    );
   }
 
   public static AstFunctionDefinition fromContext(LParser.FunctionDefinitionContext context) {
-    return null;
+    return new AstFunctionDefinition(
+        context.functionName.getText(),
+        context.argumentNames.stream().map(Token::getText).collect(Collectors.toList()),
+        AstNodes.fromContext(context.functionBody),
+        context.start.getLine(),
+        context.start.getCharPositionInLine()
+    );
   }
 
   public static AstBlock fromContext(LParser.BlockContext context) {
-    return null;
+    return new AstBlock(
+        context.statements.stream().map(AstNodes::fromContext).collect(Collectors.toList()),
+        context.start.getLine(),
+        context.start.getCharPositionInLine()
+    );
   }
 
   public static AstExpression fromContext(LParser.ExpressionContext context) {

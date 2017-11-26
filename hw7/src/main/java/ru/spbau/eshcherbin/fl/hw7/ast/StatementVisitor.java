@@ -9,102 +9,144 @@ import ru.spbau.eshcherbin.fl.hw7.LVisitor;
 
 public class StatementVisitor implements LVisitor<AstStatement> {
   @Override
-  public AstStatement visitProgram(LParser.ProgramContext ctx) {
-    return null;
-  }
-
-  @Override
-  public AstStatement visitFunctionDefinition(LParser.FunctionDefinitionContext ctx) {
-    return null;
-  }
-
-  @Override
-  public AstStatement visitBlock(LParser.BlockContext ctx) {
-    return null;
-  }
-
-  @Override
   public AstStatement visitExpressionStatement(LParser.ExpressionStatementContext ctx) {
-    return null;
+    return new AstExpressionStatement(
+        AstNodes.fromContext(ctx.expression()),
+        ctx.start.getLine(),
+        ctx.start.getCharPositionInLine()
+    );
   }
 
   @Override
   public AstStatement visitAssignmentStatement(LParser.AssignmentStatementContext ctx) {
-    return null;
+    return new AstAssignmentStatement(
+        ctx.IDENTIFIER().getText(),
+        AstNodes.fromContext(ctx.expression()),
+        ctx.start.getLine(),
+        ctx.start.getCharPositionInLine()
+    );
   }
 
   @Override
   public AstStatement visitReturnStatement(LParser.ReturnStatementContext ctx) {
-    return null;
+    return new AstReturnStatement(
+        AstNodes.fromContext(ctx.expression()),
+        ctx.start.getLine(),
+        ctx.start.getCharPositionInLine()
+    );
   }
 
   @Override
   public AstStatement visitWriteStatement(LParser.WriteStatementContext ctx) {
-    return null;
+    return new AstWriteStatement(
+        AstNodes.fromContext(ctx.expression()),
+        ctx.start.getLine(),
+        ctx.start.getCharPositionInLine()
+    );
   }
 
   @Override
   public AstStatement visitReadStatement(LParser.ReadStatementContext ctx) {
-    return null;
+    return new AstReadStatement(
+        ctx.IDENTIFIER().getText(),
+        ctx.start.getLine(),
+        ctx.start.getCharPositionInLine()
+    );
   }
 
   @Override
   public AstStatement visitIfStatement(LParser.IfStatementContext ctx) {
-    return null;
+    if (ctx.elseBody == null) {
+      return new AstIfStatement(
+          AstNodes.fromContext(ctx.condition),
+          AstNodes.fromContext(ctx.thenBody),
+          ctx.start.getLine(),
+          ctx.start.getCharPositionInLine()
+      );
+    } else {
+      return new AstIfStatement(
+          AstNodes.fromContext(ctx.condition),
+          AstNodes.fromContext(ctx.thenBody),
+          AstNodes.fromContext(ctx.elseBody),
+          ctx.start.getLine(),
+          ctx.start.getCharPositionInLine()
+      );
+    }
   }
 
   @Override
   public AstStatement visitWhileStatement(LParser.WhileStatementContext ctx) {
-    return null;
+    return new AstWhileStatement(
+        AstNodes.fromContext(ctx.condition),
+        AstNodes.fromContext(ctx.body),
+        ctx.start.getLine(),
+        ctx.start.getCharPositionInLine()
+    );
+  }
+
+  @Override
+  public AstStatement visitProgram(LParser.ProgramContext ctx) {
+    throw new IllegalStateException();
+  }
+
+  @Override
+  public AstStatement visitFunctionDefinition(LParser.FunctionDefinitionContext ctx) {
+    throw new IllegalStateException();
+  }
+
+  @Override
+  public AstStatement visitBlock(LParser.BlockContext ctx) {
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitExpressionInParentheses(LParser.ExpressionInParenthesesContext ctx) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitVariableAccessExpression(LParser.VariableAccessExpressionContext ctx) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitFunctionCallExpression(LParser.FunctionCallExpressionContext ctx) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitDecimalIntegerLiteralExpression(LParser.DecimalIntegerLiteralExpressionContext ctx) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
-  public AstStatement visitDecimalFloatingPointLiteralExpression(LParser.DecimalFloatingPointLiteralExpressionContext ctx) {
-    return null;
+  public AstStatement visitDecimalFloatingPointLiteralExpression(
+      LParser.DecimalFloatingPointLiteralExpressionContext ctx) {
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitBinaryOperationExpression(LParser.BinaryOperationExpressionContext ctx) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visit(ParseTree tree) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitChildren(RuleNode node) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitTerminal(TerminalNode node) {
-    return null;
+    throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitErrorNode(ErrorNode node) {
-    return null;
+    throw new IllegalStateException();
   }
 }

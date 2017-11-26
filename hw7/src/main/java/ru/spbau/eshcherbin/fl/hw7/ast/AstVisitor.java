@@ -21,6 +21,10 @@ public interface AstVisitor {
 
   void visit(AstNode node);
 
+  void visit(AstStatement node);
+
+  void visit(AstExpression node);
+
   void visit(AstProgram node);
 
   void visit(AstReadStatement node);

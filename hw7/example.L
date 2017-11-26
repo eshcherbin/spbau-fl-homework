@@ -1,6 +1,6 @@
 factorial(n) {
     if (n == 0) {
-        return 0 // TODO: fix this bug
+        return 0 // TODO(eshcherbin): fix this bug
     } else {
         return (n * factorial((n - 1)))
     }
