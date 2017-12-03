@@ -30,42 +30,16 @@ public class LParserTest {
             0
         )
     ));
-    assertThat(parseExpression("p(x,y)"), is(
-        new AstFunctionCallExpression(
-            "p",
-            Arrays.asList(
-                new AstVariableAccessExpression("x", 1, 2),
-                new AstVariableAccessExpression("y", 1, 4)
-            ),
-            1,
-            0
-        )
-    ));
-    assertThat(parseExpression("(p(x,y))"), is(
-        new AstFunctionCallExpression(
-            "p",
-            Arrays.asList(
-                new AstVariableAccessExpression("x", 1, 3),
-                new AstVariableAccessExpression("y", 1, 5)
-            ),
-            1,
-            1
-        )
-    ));
   }
 
   @Test
   public void testStatement() throws Exception {
     assertThat(parseStatement("p(x,y)"), is(
-        new AstExpressionStatement(
-            new AstFunctionCallExpression(
-                "p",
-                Arrays.asList(
-                    new AstVariableAccessExpression("x", 1, 2),
-                    new AstVariableAccessExpression("y", 1, 4)
-                ),
-                1,
-                0
+        new AstFunctionCallStatement(
+            "p",
+            Arrays.asList(
+                "x",
+                "y"
             ),
             1,
             0
@@ -75,13 +49,6 @@ public class LParserTest {
         new AstAssignmentStatement(
             "x",
             new AstDecimalIntegerLiteralExpression("1", 1, 3),
-            1,
-            0
-        )
-    ));
-    assertThat(parseStatement("return x"), is(
-        new AstReturnStatement(
-            new AstVariableAccessExpression("x", 1, 7),
             1,
             0
         )
@@ -100,99 +67,51 @@ public class LParserTest {
             0
         )
     ));
-    assertThat(parseStatement("while 1 { pass }"), is(
+    assertThat(parseStatement("while 1 { pass() }"), is(
         new AstWhileStatement(
             new AstDecimalIntegerLiteralExpression("1", 1, 0),
-            new AstBlock(
-                Collections.singletonList(
-                    new AstExpressionStatement(
-                        new AstVariableAccessExpression("pass", 1, 11),
-                        1,
-                        11
-                    )
-                ),
+            new AstFunctionCallStatement(
+                "pass",
+                Collections.emptyList(),
                 1,
-                9
+                11
             ),
             1,
-            0
+            9
         )
     ));
-    assertThat(parseStatement("if 1 \n{ pass }"), is(
+    assertThat(parseStatement("if 1 \n{ pass() }"), is(
         new AstIfStatement(
             new AstDecimalIntegerLiteralExpression("1", 1, 0),
-            new AstBlock(
-                Collections.singletonList(
-                    new AstExpressionStatement(
-                        new AstVariableAccessExpression("pass", 2, 2),
-                        2,
-                        0
-                    )
-                ),
-                1,
-                9
-            ),
-            1,
-            0
-        )
-    ));
-    assertThat(parseStatement("if 1 \n{ pass }\nelse\n{not_implemented()}"), is(
-        new AstIfStatement(
-            new AstDecimalIntegerLiteralExpression("1", 1, 0),
-            new AstBlock(
-                Collections.singletonList(
-                    new AstExpressionStatement(
-                        new AstVariableAccessExpression("pass", 2, 2),
-                        2,
-                        0
-                    )
-                ),
-                1,
-                9
-            ),
-            new AstBlock(
-                Collections.singletonList(
-                    new AstExpressionStatement(
-                        new AstFunctionCallExpression(
-                            "not_implemented",
-                            Collections.emptyList(),
-                            4,
-                            1),
-                        4,
-                        1
-                    )
-                ),
-                4,
+            new AstFunctionCallStatement(
+                "pass",
+                Collections.emptyList(),
+                2,
                 0
             ),
             1,
             0
         )
     ));
-  }
-
-  @Test
-  public void testBlock() throws Exception {
-    assertThat(parseBlock("{\nread x\n}"), is(
-        new AstBlock(
-            Collections.singletonList(
-                new AstReadStatement("x", 2, 0)
-            ),
+    assertThat(parseStatement("if 1 \n{ pass() }\nelse\n{not_implemented()}"), is(
+        new AstIfStatement(
+            new AstDecimalIntegerLiteralExpression("1", 1, 0),
+                    new AstFunctionCallStatement(
+                        "pass",
+                        Collections.emptyList(),
+                        2,
+                        0
+                    ),
+            new AstFunctionCallStatement(
+                "not_implemented",
+                Collections.emptyList(),
+                4,
+                1)
+        ,
             1,
             0
         )
     ));
-    assertThat(parseBlock("{\nread x;\nwrite x\n}"), is(
-        new AstBlock(
-            Arrays.asList(
-                new AstReadStatement("x", 2, 0),
-                new AstWriteStatement(new AstVariableAccessExpression("x", 3, 6), 3, 0)
-            ),
-            1,
-            0
-        )
-    ));
-    assertThat(isWrongSyntaxBlock("{\nread x\nwrite x\n}"), is(true));
   }
 
   @Test
@@ -201,11 +120,7 @@ public class LParserTest {
         new AstFunctionDefinition(
             "main",
             Collections.emptyList(),
-            new AstBlock(
-                Collections.singletonList(new AstReadStatement("x", 3, 0)),
-                2,
-                0
-            ),
+            new AstReadStatement("x", 3, 0),
             1,
             0
         )
@@ -214,11 +129,7 @@ public class LParserTest {
         new AstFunctionDefinition(
             "main",
             Arrays.asList("y", "z_1", "z_2"),
-            new AstBlock(
-                Collections.singletonList(new AstReadStatement("x", 3, 0)),
-                2,
-                0
-            ),
+                new AstReadStatement("x", 3, 0),
             1,
             0
         )
@@ -227,51 +138,26 @@ public class LParserTest {
 
   @Test
   public void testProgram() throws Exception {
-    assertThat(parseProgram("main()\n{\nread x\n}"), is(
+    assertThat(parseProgram("read x"), is(
         new AstProgram(
-            Collections.singletonList(
-                new AstFunctionDefinition(
-                    "main",
-                    Collections.emptyList(),
-                    new AstBlock(
-                        Collections.singletonList(new AstReadStatement("x", 3, 0)),
-                        2,
-                        0
-                    ),
-                    1,
-                    0
-                )
-            ),
+            Collections.emptyList(),
+            new AstReadStatement("x", 3, 0),
             1,
             0
         )
     ));
-    assertThat(parseProgram("main()\n{\nread x\n};\nintersect(y,z_1,z_2)\n{\nread x\n}"), is(
+    assertThat(parseProgram("intersect(y,z_1,z_2)\n{\nread x\n}\nread x"), is(
         new AstProgram(
-            Arrays.asList(
-                new AstFunctionDefinition(
-                    "main",
-                    Collections.emptyList(),
-                    new AstBlock(
-                        Collections.singletonList(new AstReadStatement("x", 3, 0)),
-                        2,
-                        0
-                    ),
-                    1,
-                    0
-                ),
+            Collections.singletonList(
                 new AstFunctionDefinition(
                     "intersect",
                     Arrays.asList("y", "z_1", "z_2"),
-                    new AstBlock(
-                        Collections.singletonList(new AstReadStatement("x", 7, 0)),
-                        6,
-                        0
-                    ),
-                    5,
+                    new AstReadStatement("x", 3, 0),
+                    1,
                     0
                 )
             ),
+            new AstReadStatement("x", 5, 0),
             1,
             0
         )
@@ -286,22 +172,12 @@ public class LParserTest {
     return AstNodes.fromContext(parse(string).statement());
   }
 
-  private AstBlock parseBlock(String string) {
-    return AstNodes.fromContext(parse(string).block());
-  }
-
   private AstFunctionDefinition parseFunctionDefinition(String string) {
     return AstNodes.fromContext(parse(string).functionDefinition());
   }
 
   private AstProgram parseProgram(String string) {
     return AstNodes.fromContext(parse(string).program());
-  }
-
-  private boolean isWrongSyntaxBlock(String string) {
-    LParser parser = new LParser(new BufferedTokenStream(new LLexer(CharStreams.fromString(string))));
-    parser.block();
-    return parser.getNumberOfSyntaxErrors() > 0;
   }
 
   private LParser parse(String string) {

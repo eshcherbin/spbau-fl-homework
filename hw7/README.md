@@ -14,71 +14,89 @@ write the abstract syntax tree to the standard output.
 `example.L` content:
 ```
 factorial(n) {
-    if (n == 0) {
-        return 0 // TODO(eshcherbin): fix this bug
+    if n == 0 {
+        f := 0 // TODO(eshcherbin): fix this bug
     } else {
-        return (n * factorial((n - 1)))
+        m := n - 1;
+        factorial(m);
+        f := n * f
     }
-};
-main() {
-    read n;
-    f := factorial(n);
-    write f;
-    write factorial(
-        factorial(
-            f
-        )
-    )
 }
+
+read n;
+factorial(n);
+write f;
+f_1 := f;
+factorial(f_1);
+write f
 ```
 
 Build the executable using the instructions above and run `./hw7 example.L`.
 You should see the following output:
 
 ```
+program:
 function definition {name: factorial; arguments: n; line: 1; column: 0}
 body:
-block start {line: 1; column: 13}
 |   if {line: 2; column: 4}
-|   |   condition:
-|   |   |   binary operation {operator: ==; line: 2; column: 7}
-|   |   |   |   left operand:
-|   |   |   |   |   variable access {variable name: n; line:2; column:8}
-|   |   |   |   right operand:
-|   |   |   |   |   integer literal {value: 0; line: 2; column: 13}
-|   |   then body:
-|   |   block start {line: 2; column: 16}
-|   |   |   return {line: 3; column: 8}
-|   |   |   |   integer literal {value: 0; line: 3; column: 15}
-|   |   else body:
-|   |   block start {line: 4; column: 11}
-|   |   |   return {line: 5; column: 8}
-|   |   |   |   binary operation {operator: *; line: 5; column: 15}
-|   |   |   |   |   left operand:
-|   |   |   |   |   |   variable access {variable name: n; line:5; column:16}
-|   |   |   |   |   right operand:
-|   |   |   |   |   |   function call {name : factorial; line: 5; column: 20}
-|   |   |   |   |   |   |   argument0:
-|   |   |   |   |   |   |   |   binary operation {operator: -; line: 5; column: 30}
-|   |   |   |   |   |   |   |   |   left operand:
-|   |   |   |   |   |   |   |   |   |   variable access {variable name: n; line:5; column:31}
-|   |   |   |   |   |   |   |   |   right operand:
-|   |   |   |   |   |   |   |   |   |   integer literal {value: 1; line: 5; column: 35}
-function definition {name: main; no arguments; line: 8; column: 0}
-body:
-block start {line: 8; column: 7}
-|   read {variable name: n; line: 9; column: 4}
-|   assignment {variable name: f; line: 10; column: 4}
+|   condition:
+|   |   binary operation {operator: ==; line: 2; column: 7}
+|   |   first operand:
+|   |   |   variable access {variable name: n; line:2; column:7}
+|   |   second operand:
+|   |   |   integer literal {value: 0; line: 2; column: 12}
+|   then body:
+|   |   assignment {variable name: f; line: 3; column: 8}
 |   |   assigned expression:
-|   |   |   function call {name : factorial; line: 10; column: 9}
-|   |   |   |   argument0:
-|   |   |   |   |   variable access {variable name: n; line:10; column:19}
-|   write {line: 11; column: 4}
-|   |   variable access {variable name: f; line:11; column:10}
-|   write {line: 12; column: 4}
-|   |   function call {name : factorial; line: 12; column: 10}
-|   |   |   argument0:
-|   |   |   |   function call {name : factorial; line: 13; column: 8}
-|   |   |   |   |   argument0:
-|   |   |   |   |   |   variable access {variable name: f; line:14; column:12}
+|   |   |   integer literal {value: 0; line: 3; column: 13}
+|   else body:
+|   |   delimited statements {line: 5; column: 8}
+|   |   first statement:
+|   |   |   delimited statements {line: 5; column: 8}
+|   |   |   first statement:
+|   |   |   |   assignment {variable name: m; line: 5; column: 8}
+|   |   |   |   assigned expression:
+|   |   |   |   |   binary operation {operator: -; line: 5; column: 13}
+|   |   |   |   |   first operand:
+|   |   |   |   |   |   variable access {variable name: n; line:5; column:13}
+|   |   |   |   |   second operand:
+|   |   |   |   |   |   integer literal {value: 1; line: 5; column: 17}
+|   |   |   second statement:
+|   |   |   |   function call {name : factorial; arguments: m; line: 6; column: 8}
+|   |   second statement:
+|   |   |   assignment {variable name: f; line: 7; column: 8}
+|   |   |   assigned expression:
+|   |   |   |   binary operation {operator: *; line: 7; column: 13}
+|   |   |   |   first operand:
+|   |   |   |   |   variable access {variable name: n; line:7; column:13}
+|   |   |   |   second operand:
+|   |   |   |   |   variable access {variable name: f; line:7; column:17}
+statement:
+|   delimited statements {line: 11; column: 0}
+|   first statement:
+|   |   delimited statements {line: 11; column: 0}
+|   |   first statement:
+|   |   |   delimited statements {line: 11; column: 0}
+|   |   |   first statement:
+|   |   |   |   delimited statements {line: 11; column: 0}
+|   |   |   |   first statement:
+|   |   |   |   |   delimited statements {line: 11; column: 0}
+|   |   |   |   |   first statement:
+|   |   |   |   |   |   read {variable name: n; line: 11; column: 0}
+|   |   |   |   |   second statement:
+|   |   |   |   |   |   function call {name : factorial; arguments: n; line: 12; column: 0}
+|   |   |   |   second statement:
+|   |   |   |   |   write {line: 13; column: 0}
+|   |   |   |   |   expression:
+|   |   |   |   |   |   variable access {variable name: f; line:13; column:6}
+|   |   |   second statement:
+|   |   |   |   assignment {variable name: f_1; line: 14; column: 0}
+|   |   |   |   assigned expression:
+|   |   |   |   |   variable access {variable name: f; line:14; column:7}
+|   |   second statement:
+|   |   |   function call {name : factorial; arguments: f_1; line: 15; column: 0}
+|   second statement:
+|   |   write {line: 16; column: 0}
+|   |   expression:
+|   |   |   variable access {variable name: f; line:16; column:6}
 ```

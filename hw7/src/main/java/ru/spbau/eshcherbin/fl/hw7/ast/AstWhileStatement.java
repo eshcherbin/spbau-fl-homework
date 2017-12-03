@@ -2,9 +2,9 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 
 public class AstWhileStatement extends AstStatement {
   private AstExpression condition;
-  private AstBlock body;
+  private AstStatement body;
 
-  public AstWhileStatement(AstExpression condition, AstBlock body, int line, int column) {
+  public AstWhileStatement(AstExpression condition, AstStatement body, int line, int column) {
     super(line, column);
     this.condition = condition;
     this.body = body;
@@ -14,7 +14,7 @@ public class AstWhileStatement extends AstStatement {
     return condition;
   }
 
-  public AstBlock getBody() {
+  public AstStatement getBody() {
     return body;
   }
 

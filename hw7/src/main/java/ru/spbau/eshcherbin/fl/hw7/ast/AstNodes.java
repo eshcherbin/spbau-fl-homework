@@ -9,6 +9,7 @@ public class AstNodes {
   public static AstProgram fromContext(LParser.ProgramContext context) {
     return new AstProgram(
         context.functionDefinitions.stream().map(AstNodes::fromContext).collect(Collectors.toList()),
+        AstNodes.fromContext(context.statement()),
         context.start.getLine(),
         context.start.getCharPositionInLine()
     );
@@ -19,14 +20,6 @@ public class AstNodes {
         context.functionName.getText(),
         context.argumentNames.stream().map(Token::getText).collect(Collectors.toList()),
         AstNodes.fromContext(context.functionBody),
-        context.start.getLine(),
-        context.start.getCharPositionInLine()
-    );
-  }
-
-  public static AstBlock fromContext(LParser.BlockContext context) {
-    return new AstBlock(
-        context.statements.stream().map(AstNodes::fromContext).collect(Collectors.toList()),
         context.start.getLine(),
         context.start.getCharPositionInLine()
     );

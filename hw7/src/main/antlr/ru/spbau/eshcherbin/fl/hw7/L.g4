@@ -1,27 +1,23 @@
 grammar L;
 
 program
-    :   functionDefinitions += functionDefinition (';' functionDefinitions += functionDefinition)*
+    :   (functionDefinitions += functionDefinition)* statement
     ;
 
 functionDefinition
     :   functionName = IDENTIFIER '(' (argumentNames += IDENTIFIER (',' argumentNames += IDENTIFIER)*)? ')'
-        functionBody = block
-    ;
-
-block
-    :   '{' statements += statement (';' statements += statement)* '}'
+        '{' functionBody = statement '}'
     ;
 
 statement
-    :   expression
-        # expressionStatement
-
-    |   IDENTIFIER ':=' expression
+    :   IDENTIFIER ':=' expression
         # assignmentStatement
 
-    |   'return' expression
-        # returnStatement
+    |   firstStatement = statement ';' secondStatement = statement
+        # delimitedStatements
+
+    |   functionName = IDENTIFIER '(' (arguments += IDENTIFIER (',' arguments += IDENTIFIER)*)? ')'
+        # functionCallStatement
 
     |   'write' expression
         # writeStatement
@@ -29,11 +25,11 @@ statement
     |   'read' IDENTIFIER
         # readStatement
 
-    |   'if' condition = expression thenBody = block ('else' elseBody = block)?
-        # ifStatement
-
-    |   'while' condition = expression body = block
+    |   'while' condition = expression '{' body = statement '}'
         # whileStatement
+
+    |   'if' condition = expression '{' thenBody = statement '}' ('else' '{' elseBody = statement '}')?
+        # ifStatement
     ;
 
 expression
@@ -43,38 +39,29 @@ expression
     |   IDENTIFIER
         # variableAccessExpression
 
-    |   IDENTIFIER '(' (arguments += expression (',' arguments += expression)*)? ')'
-        # functionCallExpression
-
     |   DECIMAL_INTEGER_LITERAL
         # decimalIntegerLiteralExpression
 
     |   DECIMAL_FLOATING_POINT_LITERAL
         # decimalFloatingPointLiteralExpression
 
-    |   '('
-        leftOperand = expression
-        BINARY_OPERATOR
-        rightOperand = expression
-        ')'
+    |   firstOperand = expression operator = ('*' | '/' | '%') secondOperand = expression
         # binaryOperationExpression
-    ;
 
+    |   firstOperand = expression operator = ('+' | '-') secondOperand = expression
+        # binaryOperationExpression
 
-BINARY_OPERATOR
-    :   '+'
-    |   '-'
-    |   '*'
-    |   '/'
-    |   '%'
-    |   '=='
-    |   '!='
-    |   '>'
-    |   '>='
-    |   '<'
-    |   '<='
-    |   '&&'
-    |   '||'
+    |   firstOperand = expression operator = ('<' | '>' | '<=' | '>=') secondOperand = expression
+        # binaryOperationExpression
+
+    |   firstOperand = expression operator = ('==' | '!=') secondOperand = expression
+        # binaryOperationExpression
+
+    |   firstOperand = expression operator = '&&' secondOperand = expression
+        # binaryOperationExpression
+
+    |   firstOperand = expression operator = '||' secondOperand = expression
+        # binaryOperationExpression
     ;
 
 LINE_TERMINATOR

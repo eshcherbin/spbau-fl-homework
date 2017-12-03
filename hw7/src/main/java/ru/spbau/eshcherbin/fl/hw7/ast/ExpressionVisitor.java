@@ -7,8 +7,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import ru.spbau.eshcherbin.fl.hw7.LParser;
 import ru.spbau.eshcherbin.fl.hw7.LVisitor;
 
-import java.util.stream.Collectors;
-
 public class ExpressionVisitor implements LVisitor<AstExpression> {
   @Override
   public AstExpression visitExpressionInParentheses(LParser.ExpressionInParenthesesContext ctx) {
@@ -19,16 +17,6 @@ public class ExpressionVisitor implements LVisitor<AstExpression> {
   public AstExpression visitVariableAccessExpression(LParser.VariableAccessExpressionContext ctx) {
     return new AstVariableAccessExpression(
         ctx.IDENTIFIER().getText(),
-        ctx.start.getLine(),
-        ctx.start.getCharPositionInLine()
-    );
-  }
-
-  @Override
-  public AstExpression visitFunctionCallExpression(LParser.FunctionCallExpressionContext ctx) {
-    return new AstFunctionCallExpression(
-        ctx.IDENTIFIER().getText(),
-        ctx.arguments.stream().map(AstNodes::fromContext).collect(Collectors.toList()),
         ctx.start.getLine(),
         ctx.start.getCharPositionInLine()
     );
@@ -56,12 +44,17 @@ public class ExpressionVisitor implements LVisitor<AstExpression> {
   @Override
   public AstExpression visitBinaryOperationExpression(LParser.BinaryOperationExpressionContext ctx) {
     return new AstBinaryOperationExpression(
-        AstNodes.fromContext(ctx.leftOperand),
-        AstNodes.fromContext(ctx.rightOperand),
-        ctx.BINARY_OPERATOR().getText(),
+        AstNodes.fromContext(ctx.firstOperand),
+        AstNodes.fromContext(ctx.secondOperand),
+        ctx.operator.getText(),
         ctx.start.getLine(),
         ctx.start.getCharPositionInLine()
     );
+  }
+
+  @Override
+  public AstExpression visitDelimitedStatements(LParser.DelimitedStatementsContext ctx) {
+    throw new IllegalStateException();
   }
 
   @Override
@@ -75,22 +68,7 @@ public class ExpressionVisitor implements LVisitor<AstExpression> {
   }
 
   @Override
-  public AstExpression visitBlock(LParser.BlockContext ctx) {
-    throw new IllegalStateException();
-  }
-
-  @Override
-  public AstExpression visitExpressionStatement(LParser.ExpressionStatementContext ctx) {
-    throw new IllegalStateException();
-  }
-
-  @Override
   public AstExpression visitAssignmentStatement(LParser.AssignmentStatementContext ctx) {
-    throw new IllegalStateException();
-  }
-
-  @Override
-  public AstExpression visitReturnStatement(LParser.ReturnStatementContext ctx) {
     throw new IllegalStateException();
   }
 
@@ -111,6 +89,11 @@ public class ExpressionVisitor implements LVisitor<AstExpression> {
 
   @Override
   public AstExpression visitWhileStatement(LParser.WhileStatementContext ctx) {
+    throw new IllegalStateException();
+  }
+
+  @Override
+  public AstExpression visitFunctionCallStatement(LParser.FunctionCallStatementContext ctx) {
     throw new IllegalStateException();
   }
 

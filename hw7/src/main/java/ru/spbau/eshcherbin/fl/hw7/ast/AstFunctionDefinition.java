@@ -5,9 +5,9 @@ import java.util.List;
 public class AstFunctionDefinition extends AstNode {
   private String name;
   private List<String> arguments;
-  private AstBlock body;
+  private AstStatement body;
 
-  public AstFunctionDefinition(String name, List<String> arguments, AstBlock body, int line, int column) {
+  public AstFunctionDefinition(String name, List<String> arguments, AstStatement body, int line, int column) {
     super(line, column);
     this.name = name;
     this.arguments = arguments;
@@ -22,7 +22,7 @@ public class AstFunctionDefinition extends AstNode {
     return arguments;
   }
 
-  public AstBlock getBody() {
+  public AstStatement getBody() {
     return body;
   }
 

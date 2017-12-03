@@ -5,15 +5,11 @@ public interface AstVisitor {
 
   void visit(AstBinaryOperationExpression node);
 
-  void visit(AstBlock node);
-
   void visit(AstDecimalFloatingPointLiteralExpression node);
 
   void visit(AstDecimalIntegerLiteralExpression node);
 
-  void visit(AstExpressionStatement node);
-
-  void visit(AstFunctionCallExpression node);
+  void visit(AstFunctionCallStatement node);
 
   void visit(AstFunctionDefinition node);
 
@@ -29,11 +25,11 @@ public interface AstVisitor {
 
   void visit(AstReadStatement node);
 
-  void visit(AstReturnStatement node);
-
   void visit(AstVariableAccessExpression node);
 
   void visit(AstWhileStatement node);
 
   void visit(AstWriteStatement node);
+
+  void visit(AstDelimitedStatements node);
 }

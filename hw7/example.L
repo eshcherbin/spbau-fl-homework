@@ -1,17 +1,16 @@
 factorial(n) {
-    if (n == 0) {
-        return 0 // TODO(eshcherbin): fix this bug
+    if n == 0 {
+        f := 0 // TODO(eshcherbin): fix this bug
     } else {
-        return (n * factorial((n - 1)))
+        m := n - 1;
+        factorial(m);
+        f := n * f
     }
-};
-main() {
-    read n;
-    f := factorial(n);
-    write f;
-    write factorial(
-        factorial(
-            f
-        )
-    )
 }
+
+read n;
+factorial(n);
+write f;
+f_1 := f;
+factorial(f_1);
+write f

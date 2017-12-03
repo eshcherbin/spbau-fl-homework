@@ -2,11 +2,11 @@ package ru.spbau.eshcherbin.fl.hw7.ast;
 
 import java.util.List;
 
-public class AstFunctionCallExpression extends AstExpression {
+public class AstFunctionCallStatement extends AstStatement {
   private String functionName;
-  private List<AstExpression> arguments;
+  private List<String> arguments;
 
-  public AstFunctionCallExpression(String functionName, List<AstExpression> arguments, int line, int column) {
+  public AstFunctionCallStatement(String functionName, List<String> arguments, int line, int column) {
     super(line, column);
     this.functionName = functionName;
     this.arguments = arguments;
@@ -16,7 +16,7 @@ public class AstFunctionCallExpression extends AstExpression {
     return functionName;
   }
 
-  public List<AstExpression> getArguments() {
+  public List<String> getArguments() {
     return arguments;
   }
 
@@ -30,7 +30,7 @@ public class AstFunctionCallExpression extends AstExpression {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    AstFunctionCallExpression that = (AstFunctionCallExpression) o;
+    AstFunctionCallStatement that = (AstFunctionCallStatement) o;
 
     if (!getFunctionName().equals(that.getFunctionName())) return false;
     return getArguments().equals(that.getArguments());

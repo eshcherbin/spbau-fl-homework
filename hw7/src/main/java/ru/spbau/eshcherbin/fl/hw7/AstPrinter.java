@@ -15,11 +15,10 @@ public class AstPrinter implements AstVisitor {
         + "; line: " + node.getLine()
         + "; column: " + node.getColumn()
         + "}");
-    stepIn();
     printlnWithIndentation("assigned expression:");
     stepIn();
     node.getExpression().accept(this);
-    indentationLevel -= 2;
+    stepOut();
   }
 
   @Override
@@ -28,24 +27,13 @@ public class AstPrinter implements AstVisitor {
         + "; line: " + node.getLine()
         + "; column: " + node.getColumn()
         + "}");
+    printlnWithIndentation("first operand:");
     stepIn();
-    printlnWithIndentation("left operand:");
-    stepIn();
-    node.getLeftOperand().accept(this);
+    node.getFirstOperand().accept(this);
     stepOut();
-    printlnWithIndentation("right operand:");
+    printlnWithIndentation("second operand:");
     stepIn();
-    node.getRightOperand().accept(this);
-    indentationLevel -= 2;
-  }
-
-  @Override
-  public void visit(AstBlock node) {
-    printlnWithIndentation("block start {line: " + node.getLine() + "; column: " + node.getColumn() + "}");
-    stepIn();
-    for (AstStatement statement : node.getStatements()) {
-      statement.accept(this);
-    }
+    node.getSecondOperand().accept(this);
     stepOut();
   }
 
@@ -66,33 +54,13 @@ public class AstPrinter implements AstVisitor {
   }
 
   @Override
-  public void visit(AstExpressionStatement node) {
-    printlnWithIndentation("expression statement {"
-        + "line: " + node.getLine()
-        + "; column: " + node.getColumn()
-        + "}");
-    stepIn();
-    node.getExpression().accept(this);
-    stepOut();
-  }
-
-  @Override
-  public void visit(AstFunctionCallExpression node) {
+  public void visit(AstFunctionCallStatement node) {
     printlnWithIndentation("function call {name : " + node.getFunctionName()
-        + (node.getArguments().isEmpty() ? "; no arguments" : "")
+        + (node.getArguments().isEmpty() ? "; no arguments"
+                                         : "; arguments: " + String.join(", ", node.getArguments()))
         + "; line: " + node.getLine()
         + "; column: " + node.getColumn()
         + "}");
-    stepIn();
-    int i = 0;
-    for (AstExpression argument : node.getArguments()) {
-      printlnWithIndentation("argument" + i + ":");
-      ++i;
-      stepIn();
-      argument.accept(this);
-      stepOut();
-    }
-    stepOut();
   }
 
   @Override
@@ -104,7 +72,9 @@ public class AstPrinter implements AstVisitor {
         + "; column: " + node.getColumn()
         + "}");
     printlnWithIndentation("body:");
+    stepIn();
     node.getBody().accept(this);
+    stepOut();
   }
 
   @Override
@@ -114,26 +84,33 @@ public class AstPrinter implements AstVisitor {
         + "line: " + node.getLine()
         + "; column: " + node.getColumn()
         + "}");
-    stepIn();
     printlnWithIndentation("condition:");
     stepIn();
     node.getCondition().accept(this);
     stepOut();
     printlnWithIndentation("then body:");
+    stepIn();
     node.getThenBody().accept(this);
+    stepOut();
     if (node.getElseBody() != null) {
       printlnWithIndentation("else body:");
+      stepIn();
       node.getElseBody().accept(this);
+      stepOut();
     }
-    stepOut();
   }
 
   @Override
   public void visit(AstProgram node) {
-    indentationLevel = 0;
+    resetIndentation();
+    printlnWithIndentation("program:");
     for (AstFunctionDefinition functionDefinition : node.getFunctionDefinitions()) {
       functionDefinition.accept(this);
     }
+    printlnWithIndentation("statement:");
+    stepIn();
+    node.getStatement().accept(this);
+    stepOut();
   }
 
   @Override
@@ -142,17 +119,6 @@ public class AstPrinter implements AstVisitor {
         + "; line: " + node.getLine()
         + "; column: " + node.getColumn()
         + "}");
-  }
-
-  @Override
-  public void visit(AstReturnStatement node) {
-    printlnWithIndentation("return {"
-        + "line: " + node.getLine()
-        + "; column: " + node.getColumn()
-        + "}");
-    stepIn();
-    node.getExpression().accept(this);
-    stepOut();
   }
 
   @Override
@@ -169,12 +135,12 @@ public class AstPrinter implements AstVisitor {
         + "line: " + node.getLine()
         + "; column: " + node.getColumn()
         + "}");
-    stepIn();
     printlnWithIndentation("condition:");
     stepIn();
     node.getCondition().accept(this);
     stepOut();
     printlnWithIndentation("body:");
+    stepIn();
     node.getBody().accept(this);
     stepOut();
   }
@@ -185,8 +151,25 @@ public class AstPrinter implements AstVisitor {
         + "line: " + node.getLine()
         + "; column: " + node.getColumn()
         + "}");
+    printlnWithIndentation("expression:");
     stepIn();
     node.getExpression().accept(this);
+    stepOut();
+  }
+
+  @Override
+  public void visit(AstDelimitedStatements node) {
+    printlnWithIndentation("delimited statements {"
+        + "line: " + node.getLine()
+        + "; column: " + node.getColumn()
+        + "}");
+    printlnWithIndentation("first statement:");
+    stepIn();
+    node.getFirstStatement().accept(this);
+    stepOut();
+    printlnWithIndentation("second statement:");
+    stepIn();
+    node.getSecondStatement().accept(this);
     stepOut();
   }
 
@@ -203,6 +186,10 @@ public class AstPrinter implements AstVisitor {
   @Override
   public void visit(AstExpression node) {
     throw new IllegalStateException();
+  }
+
+  private void resetIndentation() {
+    indentationLevel = 0;
   }
 
   private void stepIn() {

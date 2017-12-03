@@ -1,27 +1,27 @@
 package ru.spbau.eshcherbin.fl.hw7.ast;
 
 public class AstBinaryOperationExpression extends AstExpression {
-  private AstExpression leftOperand;
-  private AstExpression rightOperand;
+  private AstExpression firstOperand;
+  private AstExpression secondOperand;
   private String operator;
 
-  public AstBinaryOperationExpression(AstExpression leftOperand,
-                                      AstExpression rightOperand,
+  public AstBinaryOperationExpression(AstExpression firstOperand,
+                                      AstExpression secondOperand,
                                       String operator,
                                       int line,
                                       int column) {
     super(line, column);
-    this.leftOperand = leftOperand;
-    this.rightOperand = rightOperand;
+    this.firstOperand = firstOperand;
+    this.secondOperand = secondOperand;
     this.operator = operator;
   }
 
-  public AstExpression getLeftOperand() {
-    return leftOperand;
+  public AstExpression getFirstOperand() {
+    return firstOperand;
   }
 
-  public AstExpression getRightOperand() {
-    return rightOperand;
+  public AstExpression getSecondOperand() {
+    return secondOperand;
   }
 
   public String getOperator() {
@@ -40,15 +40,15 @@ public class AstBinaryOperationExpression extends AstExpression {
 
     AstBinaryOperationExpression that = (AstBinaryOperationExpression) o;
 
-    if (!leftOperand.equals(that.leftOperand)) return false;
-    if (!rightOperand.equals(that.rightOperand)) return false;
+    if (!firstOperand.equals(that.firstOperand)) return false;
+    if (!secondOperand.equals(that.secondOperand)) return false;
     return operator.equals(that.operator);
   }
 
   @Override
   public int hashCode() {
-    int result = leftOperand.hashCode();
-    result = 31 * result + rightOperand.hashCode();
+    int result = firstOperand.hashCode();
+    result = 31 * result + secondOperand.hashCode();
     result = 31 * result + operator.hashCode();
     return result;
   }

@@ -1,5 +1,6 @@
 package ru.spbau.eshcherbin.fl.hw7.ast;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
@@ -7,16 +8,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import ru.spbau.eshcherbin.fl.hw7.LParser;
 import ru.spbau.eshcherbin.fl.hw7.LVisitor;
 
-public class StatementVisitor implements LVisitor<AstStatement> {
-  @Override
-  public AstStatement visitExpressionStatement(LParser.ExpressionStatementContext ctx) {
-    return new AstExpressionStatement(
-        AstNodes.fromContext(ctx.expression()),
-        ctx.start.getLine(),
-        ctx.start.getCharPositionInLine()
-    );
-  }
+import java.util.stream.Collectors;
 
+public class StatementVisitor implements LVisitor<AstStatement> {
   @Override
   public AstStatement visitAssignmentStatement(LParser.AssignmentStatementContext ctx) {
     return new AstAssignmentStatement(
@@ -28,8 +22,8 @@ public class StatementVisitor implements LVisitor<AstStatement> {
   }
 
   @Override
-  public AstStatement visitReturnStatement(LParser.ReturnStatementContext ctx) {
-    return new AstReturnStatement(
+  public AstStatement visitWriteStatement(LParser.WriteStatementContext ctx) {
+    return new AstWriteStatement(
         AstNodes.fromContext(ctx.expression()),
         ctx.start.getLine(),
         ctx.start.getCharPositionInLine()
@@ -37,9 +31,10 @@ public class StatementVisitor implements LVisitor<AstStatement> {
   }
 
   @Override
-  public AstStatement visitWriteStatement(LParser.WriteStatementContext ctx) {
-    return new AstWriteStatement(
-        AstNodes.fromContext(ctx.expression()),
+  public AstStatement visitDelimitedStatements(LParser.DelimitedStatementsContext ctx) {
+    return new AstDelimitedStatements(
+        AstNodes.fromContext(ctx.firstStatement),
+        AstNodes.fromContext(ctx.secondStatement),
         ctx.start.getLine(),
         ctx.start.getCharPositionInLine()
     );
@@ -85,6 +80,16 @@ public class StatementVisitor implements LVisitor<AstStatement> {
   }
 
   @Override
+  public AstStatement visitFunctionCallStatement(LParser.FunctionCallStatementContext ctx) {
+    return new AstFunctionCallStatement(
+        ctx.functionName.getText(),
+        ctx.arguments.stream().map(Token::getText).collect(Collectors.toList()),
+        ctx.start.getLine(),
+        ctx.start.getCharPositionInLine()
+    );
+  }
+
+  @Override
   public AstStatement visitProgram(LParser.ProgramContext ctx) {
     throw new IllegalStateException();
   }
@@ -95,22 +100,12 @@ public class StatementVisitor implements LVisitor<AstStatement> {
   }
 
   @Override
-  public AstStatement visitBlock(LParser.BlockContext ctx) {
-    throw new IllegalStateException();
-  }
-
-  @Override
   public AstStatement visitExpressionInParentheses(LParser.ExpressionInParenthesesContext ctx) {
     throw new IllegalStateException();
   }
 
   @Override
   public AstStatement visitVariableAccessExpression(LParser.VariableAccessExpressionContext ctx) {
-    throw new IllegalStateException();
-  }
-
-  @Override
-  public AstStatement visitFunctionCallExpression(LParser.FunctionCallExpressionContext ctx) {
     throw new IllegalStateException();
   }
 

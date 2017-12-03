@@ -4,14 +4,20 @@ import java.util.List;
 
 public class AstProgram extends AstNode {
   private List<AstFunctionDefinition> functionDefinitions;
+  private AstStatement statement;
 
-  public AstProgram(List<AstFunctionDefinition> functionDefinitions, int line, int column) {
+  public AstProgram(List<AstFunctionDefinition> functionDefinitions, AstStatement statement, int line, int column) {
     super(line, column);
     this.functionDefinitions = functionDefinitions;
+    this.statement = statement;
   }
 
   public List<AstFunctionDefinition> getFunctionDefinitions() {
     return functionDefinitions;
+  }
+
+  public AstStatement getStatement() {
+    return statement;
   }
 
   @Override
@@ -24,13 +30,16 @@ public class AstProgram extends AstNode {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    AstProgram that = (AstProgram) o;
+    AstProgram program = (AstProgram) o;
 
-    return getFunctionDefinitions().equals(that.getFunctionDefinitions());
+    if (!getFunctionDefinitions().equals(program.getFunctionDefinitions())) return false;
+    return getStatement().equals(program.getStatement());
   }
 
   @Override
   public int hashCode() {
-    return getFunctionDefinitions().hashCode();
+    int result = getFunctionDefinitions().hashCode();
+    result = 31 * result + getStatement().hashCode();
+    return result;
   }
 }

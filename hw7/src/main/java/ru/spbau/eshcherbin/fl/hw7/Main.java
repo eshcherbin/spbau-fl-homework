@@ -25,9 +25,15 @@ public class Main {
 
     LLexer lexer = new LLexer(inputStream);
     LParser parser = new LParser(new BufferedTokenStream(lexer));
-    AstProgram program = AstNodes.fromContext(parser.program());
+    AstProgram program = null;
+    try {
+      program = AstNodes.fromContext(parser.program());
+    } catch (IllegalStateException e) {
+      System.err.println("Error while parsing the given file, aborting");
+      System.exit(3);
+    }
     if (parser.getNumberOfSyntaxErrors() == 0) {
-      program.accept(new AstPrinter());
+        program.accept(new AstPrinter());
     } else {
       System.err.println("Error while parsing the given file, aborting");
       System.exit(3);
