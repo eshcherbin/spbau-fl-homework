@@ -1,0 +1,75 @@
+\documentclass{amsart}
+\usepackage{fontspec}
+\usepackage{xunicode}
+\setmainfont[Mapping=tex-text,Ligatures=TeX]{CMU Serif}
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\usepackage{amsthm,amsmath,amsfonts,amssymb}
+\usepackage{enumerate}
+\usepackage[colorlinks = true]{hyperref}
+\usepackage{listings}
+\usepackage[left=1cm,right=2cm,
+    top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\begin{document}
+
+  \section{Грамматика языка L}
+
+  Здесь описана грамматика языка L. Степень формальности и строгости немного опущена для простоты изложения.
+  Определения идентификатров, литералов, бинарных операторов и т.п. взяты из домашнего задания про лексер.
+
+  Тремя основными понятиями в грамматике языка L являются объявление функции (function definition), инструкция 
+  (statement) и выражение (expression).
+
+  Программа на языке L представляет собой набор из нескольких объявлений функций (возможно, ни одного) и инструкции.
+    
+  \subsection{Объявления функций}
+  Объявление функции выглядит так:
+
+  \begin{lstlisting}
+  <program> : (<function definition>)* <statement>
+  <function definition> : <name> '(' (<arg> (',' <arg>)*)? ')' '{' <statement> '}'
+  \end{lstlisting}
+
+  \subsection{Инструкции}
+  Инструкция может быть одной из следующих:
+
+  \begin{itemize}
+      \item Присваивание
+      \item Две инструкции, разделенные точкой с запятой
+      \item Вызов функции
+      \item Вывод в выходной поток
+      \item Чтение из входного потока
+      \item Цикл "пока"
+      \item Условное ветвление
+  \end{itemize}
+
+  \begin{lstlisting}
+  <statement> : <variable name> ':=' <expression> 
+              | <statement> ';' <statement>
+              | 'write' <expression>
+              | 'read' <variable name>
+              | 'while' <expression> '{' <statement> '}'
+              | 'if' <expression> '{' <statement> '}' ('else' '{' <statement> '}')?
+  \end{lstlisting}
+
+  \subsection{Выражения}
+  Выражение может быть одним из следующих:
+
+  \begin{itemize}
+      \item Выражение, взятое в скобки
+      \item Взятие значения переменной
+      \item Целое число
+      \item Число с плавающей точкой
+      \item Применение бинарной операции к двум выражениям
+  \end{itemize}
+
+  \begin{lstlisting}
+  <expression> : '(' <expression> ')'
+               | <variable name> 
+               | <decimal integer literal>
+               | <decimal floating point literal>
+               | <expression> <binary operation> <expression>
+  \end{lstlisting}
+
+\end{document}
