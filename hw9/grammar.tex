@@ -18,8 +18,8 @@
   Здесь описана грамматика языка L. Степень формальности и строгости немного опущена для простоты изложения.
   Определения идентификатров, литералов, бинарных операторов и т.п. взяты из домашнего задания про лексер.
 
-  Тремя основными понятиями в грамматике языка L являются объявление функции (function definition), инструкция 
-  (statement) и выражение (expression).
+  Основными понятиями в грамматике языка L являются объявление функции (function definition), вызов функции (function 
+  call), инструкция (statement) и выражение (expression).
 
   Программа на языке L представляет собой набор из нескольких объявлений функций (возможно, ни одного) и инструкции.
     
@@ -27,16 +27,24 @@
   Объявление функции выглядит так:
 
   \begin{lstlisting}
-  <program> : (<function definition>)* <statement>
   <function definition> : <name> '(' (<arg> (',' <arg>)*)? ')' '{' <statement> '}'
   \end{lstlisting}
+
+  \subsection{Вызовы функций}
+  Вызов функции выглядит так:
+
+  \begin{lstlisting}
+  <function call> : <name> '(' (<arg expr> (',' <arg expr>)*)? ')'
+  \end{lstlisting}
+
 
   \subsection{Инструкции}
   Инструкция может быть одной из следующих:
 
   \begin{itemize}
       \item Присваивание
-      \item Две инструкции, разделенные точкой с запятой
+      \item Вызов функции
+      \item Несколько инструкций, разделенных точкой с запятой
       \item Вызов функции
       \item Вывод в выходной поток
       \item Чтение из входного потока
@@ -46,7 +54,8 @@
 
   \begin{lstlisting}
   <statement> : <variable name> ':=' <expression> 
-              | <statement> ';' <statement>
+              | <function call>
+              | <statement> (';' <statement>)+
               | 'write' <expression>
               | 'read' <variable name>
               | 'while' <expression> '{' <statement> '}'
@@ -58,6 +67,7 @@
 
   \begin{itemize}
       \item Выражение, взятое в скобки
+      \item Вызов функции
       \item Взятие значения переменной
       \item Целое число
       \item Число с плавающей точкой
@@ -66,6 +76,7 @@
 
   \begin{lstlisting}
   <expression> : '(' <expression> ')'
+               | <function call>
                | <variable name> 
                | <decimal integer literal>
                | <decimal floating point literal>

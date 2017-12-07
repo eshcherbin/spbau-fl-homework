@@ -1,11 +1,11 @@
-# HW7
+# HW9
 
 This is a great parser for the `L` language.
 
 ## How to build and run
 
 Run `bash build.sh` to configure and build the executable. 
-After that, run `./hw7 <source>` to perform syntactic analysis
+After that, run `./hw9 <source>` to perform syntactic analysis
 of the source code in the `<source>` file. The analyzer will 
 write the abstract syntax tree to the standard output.
 
@@ -15,23 +15,22 @@ write the abstract syntax tree to the standard output.
 ```
 factorial(n) {
     if n == 0 {
-        f := 0 // TODO(eshcherbin): fix this bug
+        factorial := 0 // TODO(eshcherbin): fix this bug
     } else {
-        m := n - 1;
-        factorial(m);
-        f := n * f
+        factorial := n * factorial(n - 1)
     }
 }
 
 read n;
-factorial(n);
-write f;
-f_1 := f;
-factorial(f_1);
-write f
+write factorial(n);
+write factorial(
+    factorial(
+        n
+    )
+)
 ```
 
-Build the executable using the instructions above and run `./hw7 example.L`.
+Build the executable using the instructions above and run `./hw9 example.L`.
 You should see the following output:
 
 ```
@@ -46,57 +45,41 @@ body:
 |   |   second operand:
 |   |   |   integer literal {value: 0; line: 2; column: 12}
 |   then body:
-|   |   assignment {variable name: f; line: 3; column: 8}
+|   |   assignment {variable name: factorial; line: 3; column: 8}
 |   |   assigned expression:
-|   |   |   integer literal {value: 0; line: 3; column: 13}
+|   |   |   integer literal {value: 0; line: 3; column: 21}
 |   else body:
-|   |   delimited statements {line: 5; column: 8}
-|   |   first statement:
-|   |   |   delimited statements {line: 5; column: 8}
-|   |   |   first statement:
-|   |   |   |   assignment {variable name: m; line: 5; column: 8}
-|   |   |   |   assigned expression:
-|   |   |   |   |   binary operation {operator: -; line: 5; column: 13}
+|   |   assignment {variable name: factorial; line: 5; column: 8}
+|   |   assigned expression:
+|   |   |   binary operation {operator: *; line: 5; column: 21}
+|   |   |   first operand:
+|   |   |   |   variable access {variable name: n; line:5; column:21}
+|   |   |   second operand:
+|   |   |   |   function call {name : factorial; line: 5; column: 25}
+|   |   |   |   argument0:
+|   |   |   |   |   binary operation {operator: -; line: 5; column: 35}
 |   |   |   |   |   first operand:
-|   |   |   |   |   |   variable access {variable name: n; line:5; column:13}
+|   |   |   |   |   |   variable access {variable name: n; line:5; column:35}
 |   |   |   |   |   second operand:
-|   |   |   |   |   |   integer literal {value: 1; line: 5; column: 17}
-|   |   |   second statement:
-|   |   |   |   function call {name : factorial; arguments: m; line: 6; column: 8}
-|   |   second statement:
-|   |   |   assignment {variable name: f; line: 7; column: 8}
-|   |   |   assigned expression:
-|   |   |   |   binary operation {operator: *; line: 7; column: 13}
-|   |   |   |   first operand:
-|   |   |   |   |   variable access {variable name: n; line:7; column:13}
-|   |   |   |   second operand:
-|   |   |   |   |   variable access {variable name: f; line:7; column:17}
+|   |   |   |   |   |   integer literal {value: 1; line: 5; column: 39}
 statement:
-|   delimited statements {line: 11; column: 0}
-|   first statement:
-|   |   delimited statements {line: 11; column: 0}
-|   |   first statement:
-|   |   |   delimited statements {line: 11; column: 0}
-|   |   |   first statement:
-|   |   |   |   delimited statements {line: 11; column: 0}
-|   |   |   |   first statement:
-|   |   |   |   |   delimited statements {line: 11; column: 0}
-|   |   |   |   |   first statement:
-|   |   |   |   |   |   read {variable name: n; line: 11; column: 0}
-|   |   |   |   |   second statement:
-|   |   |   |   |   |   function call {name : factorial; arguments: n; line: 12; column: 0}
-|   |   |   |   second statement:
-|   |   |   |   |   write {line: 13; column: 0}
-|   |   |   |   |   expression:
-|   |   |   |   |   |   variable access {variable name: f; line:13; column:6}
-|   |   |   second statement:
-|   |   |   |   assignment {variable name: f_1; line: 14; column: 0}
-|   |   |   |   assigned expression:
-|   |   |   |   |   variable access {variable name: f; line:14; column:7}
-|   |   second statement:
-|   |   |   function call {name : factorial; arguments: f_1; line: 15; column: 0}
-|   second statement:
-|   |   write {line: 16; column: 0}
-|   |   expression:
-|   |   |   variable access {variable name: f; line:16; column:6}
+|   delimited statements {line: 9; column: 0}
+|   statement0:
+|   |   read {variable name: n; line: 9; column: 0}
+|   statement1:
+|   |   delimited statements {line: 10; column: 0}
+|   |   statement0:
+|   |   |   write {line: 10; column: 0}
+|   |   |   expression:
+|   |   |   |   function call {name : factorial; line: 10; column: 6}
+|   |   |   |   argument0:
+|   |   |   |   |   variable access {variable name: n; line:10; column:16}
+|   |   statement1:
+|   |   |   write {line: 11; column: 0}
+|   |   |   expression:
+|   |   |   |   function call {name : factorial; line: 11; column: 6}
+|   |   |   |   argument0:
+|   |   |   |   |   function call {name : factorial; line: 12; column: 4}
+|   |   |   |   |   argument0:
+|   |   |   |   |   |   variable access {variable name: n; line:13; column:8}
 ```
