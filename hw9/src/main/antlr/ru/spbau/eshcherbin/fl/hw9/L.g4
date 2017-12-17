@@ -1,12 +1,12 @@
 grammar L;
 
 program
-    :   (functionDefinitions += functionDefinition)* statement
+    :   (functionDefinitions += functionDefinition)* statement? EOF
     ;
 
 functionDefinition
     :   functionName = IDENTIFIER '(' (argumentNames += IDENTIFIER (',' argumentNames += IDENTIFIER)*)? ')'
-        '{' functionBody = statement '}'
+        '{' functionBody = statement? '}'
     ;
 
 functionCall
@@ -29,10 +29,10 @@ statement
     |   'read' IDENTIFIER
         # readStatement
 
-    |   'while' condition = expression '{' body = statement '}'
+    |   'while' condition = expression '{' body = statement? '}'
         # whileStatement
 
-    |   'if' condition = expression '{' thenBody = statement '}' ('else' '{' elseBody = statement '}')?
+    |   'if' condition = expression '{' thenBody = statement? '}' ('else' '{' elseBody = statement? '}')?
         # ifStatement
     ;
 

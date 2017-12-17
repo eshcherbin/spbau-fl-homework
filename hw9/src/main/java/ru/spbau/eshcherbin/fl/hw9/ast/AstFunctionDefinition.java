@@ -40,14 +40,14 @@ public class AstFunctionDefinition extends AstNode {
 
     if (!getName().equals(that.getName())) return false;
     if (!getArguments().equals(that.getArguments())) return false;
-    return getBody().equals(that.getBody());
+    return getBody() != null ? getBody().equals(that.getBody()) : that.getBody() == null;
   }
 
   @Override
   public int hashCode() {
     int result = getName().hashCode();
     result = 31 * result + getArguments().hashCode();
-    result = 31 * result + getBody().hashCode();
+    result = 31 * result + (getBody() != null ? getBody().hashCode() : 0);
     return result;
   }
 }

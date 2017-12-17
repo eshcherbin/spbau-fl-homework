@@ -31,13 +31,13 @@ public class AstWhileStatement extends AstStatement {
     AstWhileStatement that = (AstWhileStatement) o;
 
     if (!getCondition().equals(that.getCondition())) return false;
-    return getBody().equals(that.getBody());
+    return getBody() != null ? getBody().equals(that.getBody()) : that.getBody() == null;
   }
 
   @Override
   public int hashCode() {
     int result = getCondition().hashCode();
-    result = 31 * result + getBody().hashCode();
+    result = 31 * result + (getBody() != null ? getBody().hashCode() : 0);
     return result;
   }
 }

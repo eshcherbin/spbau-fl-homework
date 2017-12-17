@@ -27,7 +27,7 @@
   Объявление функции выглядит так:
 
   \begin{lstlisting}
-  <function definition> : <name> '(' (<arg> (',' <arg>)*)? ')' '{' <statement> '}'
+  <function definition> : <name> '(' (<arg> (',' <arg>)*)? ')' '{' <statement>? '}'
   \end{lstlisting}
 
   \subsection{Вызовы функций}
@@ -58,8 +58,8 @@
               | <statement> (';' <statement>)+
               | 'write' <expression>
               | 'read' <variable name>
-              | 'while' <expression> '{' <statement> '}'
-              | 'if' <expression> '{' <statement> '}' ('else' '{' <statement> '}')?
+              | 'while' <expression> '{' <statement>? '}'
+              | 'if' <expression> '{' <statement>? '}' ('else' '{' <statement>? '}')?
   \end{lstlisting}
 
   \subsection{Выражения}

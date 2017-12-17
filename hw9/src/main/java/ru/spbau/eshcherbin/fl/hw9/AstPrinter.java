@@ -90,7 +90,11 @@ public class AstPrinter implements AstVisitor {
         + "}");
     printlnWithIndentation("body:");
     stepIn();
-    node.getBody().accept(this);
+    if (node.getBody() == null) {
+      printlnWithIndentation("empty body");
+    } else {
+      node.getBody().accept(this);
+    }
     stepOut();
   }
 
@@ -107,12 +111,20 @@ public class AstPrinter implements AstVisitor {
     stepOut();
     printlnWithIndentation("then body:");
     stepIn();
-    node.getThenBody().accept(this);
+    if (node.getThenBody() == null) {
+      printlnWithIndentation("empty body");
+    } else {
+      node.getThenBody().accept(this);
+    }
     stepOut();
     if (node.getElseBody() != null) {
       printlnWithIndentation("else body:");
       stepIn();
-      node.getElseBody().accept(this);
+      if (node.getThenBody() == null) {
+        printlnWithIndentation("empty body");
+      } else {
+        node.getElseBody().accept(this);
+      }
       stepOut();
     }
   }
@@ -126,7 +138,11 @@ public class AstPrinter implements AstVisitor {
     }
     printlnWithIndentation("statement:");
     stepIn();
-    node.getStatement().accept(this);
+    if (node.getStatement() == null) {
+      printlnWithIndentation("empty statement");
+    } else {
+      node.getStatement().accept(this);
+    }
     stepOut();
   }
 
@@ -156,7 +172,11 @@ public class AstPrinter implements AstVisitor {
     stepIn();
     node.getCondition().accept(this);
     stepOut();
-    printlnWithIndentation("body:");
+    if (node.getBody() == null) {
+      printlnWithIndentation("empty body");
+    } else {
+      printlnWithIndentation("body:");
+    }
     stepIn();
     node.getBody().accept(this);
     stepOut();

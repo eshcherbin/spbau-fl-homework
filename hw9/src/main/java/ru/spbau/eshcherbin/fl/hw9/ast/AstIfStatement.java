@@ -44,14 +44,14 @@ public class AstIfStatement extends AstStatement {
     AstIfStatement that = (AstIfStatement) o;
 
     if (!getCondition().equals(that.getCondition())) return false;
-    if (!getThenBody().equals(that.getThenBody())) return false;
+    if (getThenBody() != null ? !getThenBody().equals(that.getThenBody()) : that.getThenBody() != null) return false;
     return getElseBody() != null ? getElseBody().equals(that.getElseBody()) : that.getElseBody() == null;
   }
 
   @Override
   public int hashCode() {
     int result = getCondition().hashCode();
-    result = 31 * result + getThenBody().hashCode();
+    result = 31 * result + (getThenBody() != null ? getThenBody().hashCode() : 0);
     result = 31 * result + (getElseBody() != null ? getElseBody().hashCode() : 0);
     return result;
   }

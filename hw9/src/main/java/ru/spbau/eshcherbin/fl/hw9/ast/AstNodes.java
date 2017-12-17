@@ -39,6 +39,6 @@ public class AstNodes {
   }
 
   public static AstStatement fromContext(LParser.StatementContext context) {
-    return context.accept(new StatementVisitor());
+    return context == null ? null : context.accept(new StatementVisitor());
   }
 }

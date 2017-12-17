@@ -30,16 +30,16 @@ public class AstProgram extends AstNode {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    AstProgram program = (AstProgram) o;
+    AstProgram that = (AstProgram) o;
 
-    if (!getFunctionDefinitions().equals(program.getFunctionDefinitions())) return false;
-    return getStatement().equals(program.getStatement());
+    if (!getFunctionDefinitions().equals(that.getFunctionDefinitions())) return false;
+    return getStatement() != null ? getStatement().equals(that.getStatement()) : that.getStatement() == null;
   }
 
   @Override
   public int hashCode() {
     int result = getFunctionDefinitions().hashCode();
-    result = 31 * result + getStatement().hashCode();
+    result = 31 * result + (getStatement() != null ? getStatement().hashCode() : 0);
     return result;
   }
 }
