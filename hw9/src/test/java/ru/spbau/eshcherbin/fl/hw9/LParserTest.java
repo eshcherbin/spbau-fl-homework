@@ -2,205 +2,70 @@ package ru.spbau.eshcherbin.fl.hw9;
 
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.CharStreams;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import ru.spbau.eshcherbin.fl.hw9.ast.*;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class LParserTest {
-
-  @Test
-  public void testExpression() throws Exception {
-    assertThat(parseExpression("x"), is(new AstVariableAccessExpression("x", 1, 0)));
-    AstExpression actual = parseExpression("117");
-    assertThat(actual, is(new AstDecimalIntegerLiteralExpression("117", 1, 0)));
-    assertThat(parseExpression("1.0"),
-        is(new AstDecimalFloatingPointLiteralExpression("1.0", 1, 0)));
-    assertThat(parseExpression("(a + 23)"), is(
-        new AstBinaryOperationExpression(
-            new AstVariableAccessExpression("a", 1, 1),
-            new AstDecimalIntegerLiteralExpression("23", 1, 5),
-            "+",
-            1,
-            0
-        )
-    ));
-  }
-
-  @Test
-  public void testStatement() throws Exception {
-    assertThat(parseStatement("p(x,y)"), is(
-        new AstFunctionCallStatement(
-            new AstFunctionCall(
-                "p",
-                Arrays.asList(
-                    new AstVariableAccessExpression("x", 1, 2),
-                    new AstVariableAccessExpression("y", 1, 4)
-                ),
-                1,
-                0
-            ),
-            1,
-            0
-        )
-    ));
-    assertThat(parseStatement("x:=1"), is(
-        new AstAssignmentStatement(
-            "x",
-            new AstDecimalIntegerLiteralExpression("1", 1, 3),
-            1,
-            0
-        )
-    ));
-    assertThat(parseStatement("write x"), is(
-        new AstWriteStatement(
-            new AstVariableAccessExpression("x", 1, 6),
-            1,
-            0
-        )
-    ));
-    assertThat(parseStatement("read x"), is(
-        new AstReadStatement(
-            "x",
-            1,
-            0
-        )
-    ));
-    assertThat(parseStatement("while 1 { pass() }"), is(
-        new AstWhileStatement(
-            new AstDecimalIntegerLiteralExpression("1", 1, 0),
-            new AstFunctionCallStatement(
-                new AstFunctionCall(
-                    "pass",
-                    Collections.emptyList(),
-                    1,
-                    11
-                ),
-                1,
-                9
-            ),
-            1,
-            9
-        )
-    ));
-    assertThat(parseStatement("if 1 \n{ pass() }"), is(
-        new AstIfStatement(
-            new AstDecimalIntegerLiteralExpression("1", 1, 0),
-            new AstFunctionCallStatement(
-                new AstFunctionCall(
-                    "pass",
-                    Collections.emptyList(),
-                    2,
-                    0
-                ),
-                2,
-                0
-            ),
-            1,
-            0
-        )
-    ));
-    assertThat(parseStatement("if 1 \n{ pass() }\nelse\n{not_implemented()}"), is(
-        new AstIfStatement(
-            new AstDecimalIntegerLiteralExpression("1", 1, 0),
-            new AstFunctionCallStatement(
-                new AstFunctionCall(
-                    "pass",
-                    Collections.emptyList(),
-                    2,
-                    0
-                ),
-                2,
-                0
-            ),
-            new AstFunctionCallStatement(
-                new AstFunctionCall(
-                    "not_implemented",
-                    Collections.emptyList(),
-                    4,
-                    1)
-                ,
-                4,
-                1
-            ),
-            1,
-            0
-        )
-    ));
-  }
-
-  @Test
-  public void testFunctionDefinition() throws Exception {
-    assertThat(parseFunctionDefinition("main()\n{\nread x\n}"), is(
-        new AstFunctionDefinition(
-            "main",
-            Collections.emptyList(),
-            new AstReadStatement("x", 3, 0),
-            1,
-            0
-        )
-    ));
-    assertThat(parseFunctionDefinition("main(y,z_1,z_2)\n{\nread x\n}"), is(
-        new AstFunctionDefinition(
-            "main",
-            Arrays.asList("y", "z_1", "z_2"),
-                new AstReadStatement("x", 3, 0),
-            1,
-            0
-        )
-    ));
-  }
-
   @Test
   public void testProgram() throws Exception {
-    assertThat(parseProgram("read x"), is(
-        new AstProgram(
-            Collections.emptyList(),
-            new AstReadStatement("x", 3, 0),
-            1,
-            0
-        )
-    ));
-    assertThat(parseProgram("intersect(y,z_1,z_2)\n{\nread x\n}\nread x"), is(
-        new AstProgram(
-            Collections.singletonList(
-                new AstFunctionDefinition(
-                    "intersect",
-                    Arrays.asList("y", "z_1", "z_2"),
-                    new AstReadStatement("x", 3, 0),
-                    1,
-                    0
-                )
-            ),
-            new AstReadStatement("x", 5, 0),
-            1,
-            0
-        )
-    ));
+    testValid(getClass().getResource("/valid/").getPath(), LParserTest::parseProgram);
+    testInvalid(getClass().getResource("/invalid/").getPath(), LParserTest::parseProgram);
+  }
+  private void testValid(String path, Function<String, ? extends AstNode> parseFunction) throws Exception {
+    List<String> testNames = Files.list(Paths.get(path))
+        .filter(file -> FilenameUtils.getExtension(file.toString()).equals("L"))
+        .map(file -> FilenameUtils.getBaseName(file.toString()))
+        .collect(Collectors.toList());
+    for (String test : testNames) {
+      AstTestPrinter printer = new AstTestPrinter();
+      AstNode node = parseFunction.apply(
+          FileUtils.readFileToString(new File(FilenameUtils.concat(path, test + ".L"))));
+      node.accept(printer);
+      assertEquals(
+          FileUtils.readFileToString(new File(FilenameUtils.concat(path, test + ".ans"))),
+          printer.getString());
+    }
   }
 
-  private AstExpression parseExpression(String string) {
-    return AstNodes.fromContext(parse(string).expression());
+  private void testInvalid(String path, Function<String, ? extends AstNode> parseFunction) throws Exception {
+    List<String> testNames = Files.list(Paths.get(path))
+        .filter(file -> FilenameUtils.getExtension(file.toString()).equals("L"))
+        .map(file -> FilenameUtils.getBaseName(file.toString()))
+        .collect(Collectors.toList());
+    for (String test : testNames) {
+      try {
+        AstNode node = parseFunction.apply(
+            FileUtils.readFileToString(new File(FilenameUtils.concat(path, test + ".L"))));
+        node.accept(new AstTestPrinter());
+        fail("Expected an ParsingException but none was thrown");
+      } catch (ParsingException e) {
+        // everything is as expected
+      }
+    }
   }
 
-  private AstStatement parseStatement(String string) {
-    return AstNodes.fromContext(parse(string).statement());
+  private static AstProgram parseProgram(String string) {
+    LParser parser = parse(string);
+    AstProgram node = AstNodes.fromContext(parser.program());
+    if (parser.getNumberOfSyntaxErrors() != 0) {
+      throw new ParsingException();
+    }
+    return node;
   }
 
-  private AstFunctionDefinition parseFunctionDefinition(String string) {
-    return AstNodes.fromContext(parse(string).functionDefinition());
-  }
-
-  private AstProgram parseProgram(String string) {
-    return AstNodes.fromContext(parse(string).program());
-  }
-
-  private LParser parse(String string) {
+  private static LParser parse(String string) {
     return new LParser(new BufferedTokenStream(new LLexer(CharStreams.fromString(string))));
   }
 }

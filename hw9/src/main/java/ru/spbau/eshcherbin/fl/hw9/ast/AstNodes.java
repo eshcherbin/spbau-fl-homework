@@ -2,6 +2,7 @@ package ru.spbau.eshcherbin.fl.hw9.ast;
 
 import org.antlr.v4.runtime.Token;
 import ru.spbau.eshcherbin.fl.hw9.LParser;
+import ru.spbau.eshcherbin.fl.hw9.ParsingException;
 
 import java.util.stream.Collectors;
 
@@ -35,10 +36,18 @@ public class AstNodes {
   }
 
   public static AstExpression fromContext(LParser.ExpressionContext context) {
-    return context.accept(new ExpressionVisitor());
+    try {
+      return context.accept(new ExpressionVisitor());
+    } catch (IllegalStateException e) {
+      throw new ParsingException();
+    }
   }
 
   public static AstStatement fromContext(LParser.StatementContext context) {
-    return context == null ? null : context.accept(new StatementVisitor());
+    try {
+      return context == null ? null : context.accept(new StatementVisitor());
+    } catch (IllegalStateException e) {
+      throw new ParsingException();
+    }
   }
 }

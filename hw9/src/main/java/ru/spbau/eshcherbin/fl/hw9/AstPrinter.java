@@ -5,9 +5,9 @@ import ru.spbau.eshcherbin.fl.hw9.ast.*;
 import java.util.Collections;
 
 public class AstPrinter implements AstVisitor {
-  private static final String INDENTATION_UNIT = "|   ";
+  protected static final String INDENTATION_UNIT = "|   ";
 
-  private int indentationLevel = 0;
+  protected int indentationLevel = 0;
 
   @Override
   public void visit(AstAssignmentStatement node) {
@@ -225,19 +225,19 @@ public class AstPrinter implements AstVisitor {
     throw new IllegalStateException();
   }
 
-  private void resetIndentation() {
+  protected void resetIndentation() {
     indentationLevel = 0;
   }
 
-  private void stepIn() {
+  protected void stepIn() {
     ++indentationLevel;
   }
 
-  private void stepOut() {
+  protected void stepOut() {
     --indentationLevel;
   }
 
-  private void printlnWithIndentation(String string) {
+  protected void printlnWithIndentation(String string) {
     System.out.print(String.join("", Collections.nCopies(indentationLevel, INDENTATION_UNIT)));
     System.out.println(string);
   }

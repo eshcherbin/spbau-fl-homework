@@ -28,15 +28,13 @@ public class Main {
     AstProgram program = null;
     try {
       program = AstNodes.fromContext(parser.program());
-    } catch (IllegalStateException e) {
+      if (parser.getNumberOfSyntaxErrors() != 0) {
+        throw new ParsingException();
+      }
+    } catch (ParsingException e) {
       System.err.println("Error while parsing the given file, aborting");
       System.exit(3);
     }
-    if (parser.getNumberOfSyntaxErrors() == 0) {
-        program.accept(new AstPrinter());
-    } else {
-      System.err.println("Error while parsing the given file, aborting");
-      System.exit(3);
-    }
+    program.accept(new AstPrinter());
   }
 }
