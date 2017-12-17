@@ -16,7 +16,7 @@
   \section{Грамматика языка L}
 
   Здесь описана грамматика языка L. Степень формальности и строгости немного опущена для простоты изложения.
-  Определения идентификатров, литералов, бинарных операторов и т.п. взяты из домашнего задания про лексер.
+  Определения идентификаторов, литералов, бинарных операторов и т.п. взяты из домашнего задания про лексер.
 
   Основными понятиями в грамматике языка L являются объявление функции (function definition), вызов функции (function 
   call), инструкция (statement) и выражение (expression).
@@ -71,7 +71,7 @@
       \item Взятие значения переменной
       \item Целое число
       \item Число с плавающей точкой
-      \item Применение бинарной операции к двум выражениям
+      \item Применение бинарной операции к двум выражениям (правила приведены в порядке уменьшения приоритета операций)
   \end{itemize}
 
   \begin{lstlisting}
@@ -80,7 +80,12 @@
                | <variable name> 
                | <decimal integer literal>
                | <decimal floating point literal>
-               | <expression> <binary operation> <expression>
+               | <expression> ('*' | '/' | '%') <expression>
+               | <expression> ('+' | '-') <expression>
+               | <expression> ('<' | '>' | '<=' | '>=') <expression>
+               | <expression> ('==' | '!=') <expression>
+               | <expression> '&&' <expression>
+               | <expression> '||' <expression>
   \end{lstlisting}
 
 \end{document}
