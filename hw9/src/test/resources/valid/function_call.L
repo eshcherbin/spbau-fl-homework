@@ -1,0 +1,1 @@
+function(123 * qwerty(asdf + ghjk), 10100010100110)

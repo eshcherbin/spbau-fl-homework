@@ -1,0 +1,55 @@
+program:
+statement:
+|   delimited statements {line: 1; column: 0}
+|   statement0:
+|   |   assignment {variable name: x; line: 1; column: 0}
+|   |   assigned expression:
+|   |   |   binary operation {operator: &&; line: 1; column: 5}
+|   |   |   first operand:
+|   |   |   |   binary operation {operator: *; line: 1; column: 5}
+|   |   |   |   first operand:
+|   |   |   |   |   integer literal {value: 5; line: 1; column: 5}
+|   |   |   |   second operand:
+|   |   |   |   |   integer literal {value: 9; line: 1; column: 9}
+|   |   |   second operand:
+|   |   |   |   binary operation {operator: *; line: 1; column: 14}
+|   |   |   |   first operand:
+|   |   |   |   |   integer literal {value: 9; line: 1; column: 14}
+|   |   |   |   second operand:
+|   |   |   |   |   function call {name : fun; line: 1; column: 18}
+|   |   |   |   |   argument0:
+|   |   |   |   |   |   binary operation {operator: +; line: 1; column: 22}
+|   |   |   |   |   |   first operand:
+|   |   |   |   |   |   |   integer literal {value: 5; line: 1; column: 22}
+|   |   |   |   |   |   second operand:
+|   |   |   |   |   |   |   integer literal {value: 7; line: 1; column: 26}
+|   statement1:
+|   |   delimited statements {line: 2; column: 0}
+|   |   statement0:
+|   |   |   assignment {variable name: y; line: 2; column: 0}
+|   |   |   assigned expression:
+|   |   |   |   binary operation {operator: ==; line: 2; column: 5}
+|   |   |   |   first operand:
+|   |   |   |   |   binary operation {operator: ==; line: 2; column: 5}
+|   |   |   |   |   first operand:
+|   |   |   |   |   |   binary operation {operator: ==; line: 2; column: 5}
+|   |   |   |   |   |   first operand:
+|   |   |   |   |   |   |   variable access {variable name: y; line:2; column:5}
+|   |   |   |   |   |   second operand:
+|   |   |   |   |   |   |   variable access {variable name: z; line:2; column:10}
+|   |   |   |   |   second operand:
+|   |   |   |   |   |   variable access {variable name: t; line:2; column:15}
+|   |   |   |   second operand:
+|   |   |   |   |   variable access {variable name: w; line:2; column:20}
+|   |   statement1:
+|   |   |   assignment {variable name: is_python3; line: 3; column: 0}
+|   |   |   assigned expression:
+|   |   |   |   binary operation {operator: <=; line: 3; column: 14}
+|   |   |   |   first operand:
+|   |   |   |   |   binary operation {operator: <=; line: 3; column: 14}
+|   |   |   |   |   first operand:
+|   |   |   |   |   |   floating point literal {value: 3.0; line: 3; column: 14}
+|   |   |   |   |   second operand:
+|   |   |   |   |   |   variable access {variable name: python_version; line:3; column:21}
+|   |   |   |   second operand:
+|   |   |   |   |   floating point literal {value: 3.7; line: 3; column: 39}

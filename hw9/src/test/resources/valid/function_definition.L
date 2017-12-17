@@ -1,0 +1,3 @@
+function(def, arg1, arg2) {
+    pass()
+}

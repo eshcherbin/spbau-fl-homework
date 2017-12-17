@@ -1,0 +1,9 @@
+program:
+statement:
+|   write {line: 1; column: 0}
+|   expression:
+|   |   binary operation {operator: *; line: 1; column: 11}
+|   |   first operand:
+|   |   |   variable access {variable name: expression; line:1; column:12}
+|   |   second operand:
+|   |   |   floating point literal {value: 123.4; line: 1; column: 27}

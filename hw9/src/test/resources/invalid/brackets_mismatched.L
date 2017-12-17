@@ -1,0 +1,1 @@
+write (((((expression) * (123.4))))))

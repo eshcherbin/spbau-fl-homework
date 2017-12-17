@@ -1,0 +1,13 @@
+program:
+statement:
+|   assignment {variable name: x; line: 1; column: 0}
+|   assigned expression:
+|   |   binary operation {operator: +; line: 1; column: 5}
+|   |   first operand:
+|   |   |   integer literal {value: 1; line: 1; column: 5}
+|   |   second operand:
+|   |   |   binary operation {operator: *; line: 1; column: 9}
+|   |   |   first operand:
+|   |   |   |   variable access {variable name: x; line:1; column:9}
+|   |   |   second operand:
+|   |   |   |   integer literal {value: 4; line: 1; column: 13}

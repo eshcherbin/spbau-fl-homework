@@ -1,0 +1,17 @@
+program:
+statement:
+|   delimited statements {line: 1; column: 0}
+|   statement0:
+|   |   read {variable name: x; line: 1; column: 0}
+|   statement1:
+|   |   write {line: 2; column: 0}
+|   |   expression:
+|   |   |   binary operation {operator: *; line: 2; column: 6}
+|   |   |   first operand:
+|   |   |   |   binary operation {operator: *; line: 2; column: 6}
+|   |   |   |   first operand:
+|   |   |   |   |   variable access {variable name: x; line:2; column:6}
+|   |   |   |   second operand:
+|   |   |   |   |   integer literal {value: 2; line: 2; column: 10}
+|   |   |   second operand:
+|   |   |   |   variable access {variable name: x; line:2; column:14}

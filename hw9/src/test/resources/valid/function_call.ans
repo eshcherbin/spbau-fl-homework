@@ -1,0 +1,17 @@
+program:
+statement:
+|   function call {name : function; line: 1; column: 0}
+|   argument0:
+|   |   binary operation {operator: *; line: 1; column: 9}
+|   |   first operand:
+|   |   |   integer literal {value: 123; line: 1; column: 9}
+|   |   second operand:
+|   |   |   function call {name : qwerty; line: 1; column: 15}
+|   |   |   argument0:
+|   |   |   |   binary operation {operator: +; line: 1; column: 22}
+|   |   |   |   first operand:
+|   |   |   |   |   variable access {variable name: asdf; line:1; column:22}
+|   |   |   |   second operand:
+|   |   |   |   |   variable access {variable name: ghjk; line:1; column:29}
+|   argument1:
+|   |   integer literal {value: 10100010100110; line: 1; column: 36}

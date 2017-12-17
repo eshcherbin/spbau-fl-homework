@@ -1,0 +1,23 @@
+program:
+statement:
+|   delimited statements {line: 1; column: 0}
+|   statement0:
+|   |   read {variable name: variable; line: 1; column: 0}
+|   statement1:
+|   |   delimited statements {line: 2; column: 0}
+|   |   statement0:
+|   |   |   assignment {variable name: variable; line: 2; column: 0}
+|   |   |   assigned expression:
+|   |   |   |   binary operation {operator: +; line: 2; column: 12}
+|   |   |   |   first operand:
+|   |   |   |   |   variable access {variable name: var; line:2; column:12}
+|   |   |   |   second operand:
+|   |   |   |   |   integer literal {value: 117; line: 2; column: 18}
+|   |   statement1:
+|   |   |   write {line: 3; column: 0}
+|   |   |   expression:
+|   |   |   |   binary operation {operator: -; line: 3; column: 6}
+|   |   |   |   first operand:
+|   |   |   |   |   variable access {variable name: variable; line:3; column:6}
+|   |   |   |   second operand:
+|   |   |   |   |   variable access {variable name: variable; line:3; column:17}

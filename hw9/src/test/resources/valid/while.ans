@@ -1,0 +1,7 @@
+program:
+statement:
+|   while {line: 1; column: 0}
+|   condition:
+|   |   variable access {variable name: true; line:1; column:7}
+|   body:
+|   |   function call {name : pass; no arguments; line: 2; column: 4}

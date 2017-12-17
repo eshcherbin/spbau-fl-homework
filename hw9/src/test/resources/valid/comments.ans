@@ -1,0 +1,6 @@
+program:
+function definition {name: fun; no arguments; line: 2; column: 0}
+body:
+|   empty body
+statement:
+|   empty statement

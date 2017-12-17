@@ -176,10 +176,10 @@ public class AstPrinter implements AstVisitor {
       printlnWithIndentation("empty body");
     } else {
       printlnWithIndentation("body:");
+      stepIn();
+      node.getBody().accept(this);
+      stepOut();
     }
-    stepIn();
-    node.getBody().accept(this);
-    stepOut();
   }
 
   @Override

@@ -1,0 +1,13 @@
+program:
+statement:
+|   if {without else; line: 1; column: 0}
+|   condition:
+|   |   variable access {variable name: true; line:1; column:4}
+|   then body:
+|   |   if {line: 2; column: 4}
+|   |   condition:
+|   |   |   variable access {variable name: really_true; line:2; column:8}
+|   |   then body:
+|   |   |   function call {name : pass; no arguments; line: 3; column: 8}
+|   |   else body:
+|   |   |   function call {name : not_pass; no arguments; line: 5; column: 8}

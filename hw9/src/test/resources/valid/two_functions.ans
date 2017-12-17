@@ -1,0 +1,9 @@
+program:
+function definition {name: fun1; no arguments; line: 1; column: 0}
+body:
+|   empty body
+function definition {name: fun2; arguments: fun1; line: 5; column: 0}
+body:
+|   function call {name : do_fun_things; no arguments; line: 6; column: 4}
+statement:
+|   empty statement

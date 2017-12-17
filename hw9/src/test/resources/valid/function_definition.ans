@@ -1,0 +1,6 @@
+program:
+function definition {name: function; arguments: def, arg1, arg2; line: 1; column: 0}
+body:
+|   function call {name : pass; no arguments; line: 2; column: 4}
+statement:
+|   empty statement

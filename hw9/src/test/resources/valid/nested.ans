@@ -1,0 +1,51 @@
+program:
+function definition {name: main; arguments: args; line: 1; column: 0}
+body:
+|   if {line: 2; column: 4}
+|   condition:
+|   |   binary operation {operator: !=; line: 2; column: 7}
+|   |   first operand:
+|   |   |   function call {name : len; line: 2; column: 7}
+|   |   |   argument0:
+|   |   |   |   variable access {variable name: args; line:2; column:11}
+|   |   second operand:
+|   |   |   integer literal {value: 1; line: 2; column: 20}
+|   then body:
+|   |   write {line: 3; column: 8}
+|   |   expression:
+|   |   |   variable access {variable name: one_argument_expected; line:3; column:14}
+|   else body:
+|   |   if {without else; line: 5; column: 8}
+|   |   condition:
+|   |   |   binary operation {operator: ==; line: 5; column: 11}
+|   |   |   first operand:
+|   |   |   |   function call {name : get; line: 5; column: 11}
+|   |   |   |   argument0:
+|   |   |   |   |   variable access {variable name: args; line:5; column:15}
+|   |   |   |   argument1:
+|   |   |   |   |   integer literal {value: 0; line: 5; column: 21}
+|   |   |   second operand:
+|   |   |   |   variable access {variable name: nested_filename; line:5; column:27}
+|   |   then body:
+|   |   |   delimited statements {line: 6; column: 12}
+|   |   |   statement0:
+|   |   |   |   while {line: 6; column: 12}
+|   |   |   |   condition:
+|   |   |   |   |   integer literal {value: 1; line: 6; column: 18}
+|   |   |   |   body:
+|   |   |   |   |   function call {name : be_happy; no arguments; line: 7; column: 16}
+|   |   |   statement1:
+|   |   |   |   while {line: 9; column: 12}
+|   |   |   |   condition:
+|   |   |   |   |   integer literal {value: 0; line: 9; column: 18}
+|   |   |   |   empty body
+statement:
+|   if {without else; line: 17; column: 0}
+|   condition:
+|   |   binary operation {operator: ==; line: 17; column: 3}
+|   |   first operand:
+|   |   |   variable access {variable name: name; line:17; column:3}
+|   |   second operand:
+|   |   |   variable access {variable name: main; line:17; column:11}
+|   then body:
+|   |   function call {name : main; no arguments; line: 18; column: 4}

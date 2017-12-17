@@ -11,9 +11,9 @@ public class AstTestPrinter extends AstPrinter {
 
   @Override
   protected void printlnWithIndentation(String string) {
-    String indentation = String.join("", Collections.nCopies(indentationLevel, INDENTATION_UNIT));
-    System.out.print(indentation);
-    System.out.println(string);
-    stringBuilder.append(indentation).append(string).append('\n');
+    stringBuilder
+        .append(String.join("", Collections.nCopies(indentationLevel, INDENTATION_UNIT)))
+        .append(string)
+        .append('\n');
   }
 }
